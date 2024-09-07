@@ -1,0 +1,3 @@
+QWidget#Sidebar_QWidget {
+    background-color: lightgray;
+}
