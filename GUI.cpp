@@ -266,6 +266,7 @@ namespace UI {
     void DrawQView::draw_seg() {
         // 绘制一个分割区域，比如绘制一个椭圆，假设中心点(150, 150)，大小为(100, 50)
         scene.addEllipse(150, 150, 100, 50, QPen(Qt::blue), QBrush(Qt::blue));
+        this->update();
     }
 
     void DrawQView::draw_clear() {
@@ -286,11 +287,18 @@ namespace UI {
         int frameCount = 0;
         double fps = 0.0;
         bool ScalingFactor = false;
-        BYTETracker tracker(60, 300);
+        BYTETracker tracker(60, 3000);
+        // 自动加锁
+        QMutexLocker locker(&mutex);
         while (true) {
             if (!state) {
                 disconnect(this, &YOLOThread::updateAABB, drawQView, &DrawQView::onUpdateAABB);
                 break;
+            }
+
+            // 等待条件变量
+            while (paused) {
+                waitCondition.wait(&mutex);
             }
 
             frameCount++;
@@ -319,13 +327,13 @@ namespace UI {
             gui->yolo->detect(image, objects);
             vector<STrack> output_stracks = tracker.update(objects);
             gui->yolo->result(objects);
-            this->updateByteTrack(tracker, output_stracks, objects);
+            this->updateByteTrack(tracker, output_stracks);
             // 发射信号
             emit updateAABB(output_stracks);
         }
     }
 
-    void YOLOThread::updateByteTrack(BYTETracker &tracker, std::vector<STrack> &output_stracks, const std::vector<Object> &objects) {
+    void YOLOThread::updateByteTrack(BYTETracker &tracker, std::vector<STrack> &output_stracks) {
         for (int i = 0; i < output_stracks.size(); i++)
         {
             std::vector<float> tlwh = output_stracks[i].tlwh;
@@ -335,6 +343,15 @@ namespace UI {
 
             }
         }
+    }
+
+    void YOLOThread::pause() {
+        paused = true;
+    }
+
+    void YOLOThread::resume() {
+        paused = false;
+        waitCondition.wakeOne(); // 唤醒等待的线程
     }
 
     VideoWidget::VideoWidget(QWidget *parent, GUI *gui) : QWidget(parent), m_frame(QImage()), gui(gui) {
@@ -347,7 +364,7 @@ namespace UI {
 
         gui->uiMainWindow->gridLayout_2->addWidget(this, 0, 0, 1, 6);
 
-        QObject::connect(gui->uiMainWindow->detect_Button, &QPushButton::clicked, [this]() {
+        connect(gui->uiMainWindow->detect_Button, &QPushButton::clicked, [this]() {
             this->yoloThread->state = !this->yoloThread->state;
             if (this->gui->Model_flag && this->yoloThread->state) {
                 this->gui->uiMainWindow->detect_Button->setText("关闭推理");
@@ -359,11 +376,11 @@ namespace UI {
             }
         });
 
-        QObject::connect(gui->uiMainWindow->Regress_Button, &QPushButton::clicked, [this]() {
+        connect(gui->uiMainWindow->Regress_Button, &QPushButton::clicked, [this]() {
             player->setPosition(player->position() - 5000);
         });
 
-        QObject::connect(gui->uiMainWindow->VideoState_Button, &QPushButton::clicked, [this]() {
+        connect(gui->uiMainWindow->VideoState_Button, &QPushButton::clicked, [this]() {
             if (this->player->isPlaying()) {
                 this->pause();
             }
@@ -372,14 +389,23 @@ namespace UI {
             }
         });
 
-        QObject::connect(gui->uiMainWindow->Forward_Button, &QPushButton::clicked, [this]() {
+        connect(gui->uiMainWindow->Forward_Button, &QPushButton::clicked, [this]() {
             player->setPosition(player->position() + 5000);
         });
 
-        QObject::connect(gui->uiMainWindow->VideoClose_Button, &QPushButton::clicked, [this]() {
+        connect(gui->uiMainWindow->VideoClose_Button, &QPushButton::clicked, [this]() {
             this->clear();
         });
 
+        connect(player, &QMediaPlayer::mediaStatusChanged, this, [this](QMediaPlayer::MediaStatus status) {
+            if (status == QMediaPlayer::EndOfMedia) {
+                // 执行自定义任务
+                qDebug() << "播放结束，执行任务";
+                yoloThread->state = false;
+                yoloThread->requestInterruption();
+                yoloThread->wait();
+            }
+        });
     };
 
     void VideoWidget::setVideoFrame(const QImage &frame) {
@@ -405,6 +431,25 @@ namespace UI {
             // 更新标签，显示当前播放时间和总时长
             gui->uiMainWindow->VideoTimer_Label->setText(timeString + " / " + this->VideoTimer);
             gui->uiMainWindow->VideoTimer_Slider->setValue(position);
+        });
+
+        connect(gui->uiMainWindow->VideoTimer_Slider, &QSlider::sliderPressed, this, [this]() {
+            player->pause();
+            yoloThread->pause();
+        });
+
+        connect(gui->uiMainWindow->VideoTimer_Slider, &QSlider::sliderReleased, this, [this]() {
+            // 获取当前值
+            int newValue = gui->uiMainWindow->VideoTimer_Slider->value();
+            // 禁用 QSlider 的所有信号
+            gui->uiMainWindow->VideoTimer_Slider->blockSignals(true);
+            qDebug() << "滑块释放，新值为：" << newValue;
+            // 设置播放位置
+            player->setPosition(newValue);
+            // 恢复 QSlider 的信号
+            gui->uiMainWindow->VideoTimer_Slider->blockSignals(false);
+            yoloThread->resume();
+            player->play();
         });
     }
 

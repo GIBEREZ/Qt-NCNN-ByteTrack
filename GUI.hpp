@@ -88,15 +88,19 @@ namespace UI {
         bool state = false;
     public:
         explicit YOLOThread(GUI *gui, QVideoSink *videoSink, QObject *parent);
-        void updateByteTrack(BYTETracker &tracker, std::vector<STrack> &output_stracks, const std::vector<Object> &objects);
+        void updateByteTrack(BYTETracker &tracker, std::vector<STrack> &output_stracks);
         void run() override;
+        void pause();
+        void resume();
     signals:
         void updateAABB(const std::vector<STrack>& output_stracks);
     private:
         GUI *gui;
         QVideoSink *videoSink;
         DrawQView *drawQView;
-        std::vector<ByteTrackData> BT_Datas;
+        QMutex mutex;
+        QWaitCondition waitCondition;
+        bool paused = false;
     };
 
     class VideoWidget : public QWidget {
