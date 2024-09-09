@@ -1,14 +1,3 @@
-QMainWindow#MainWindow {
-
-}
-
 QWidget#Sidebar_QWidget {
     background-color: lightgray;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-}
-
-QPushButton#Main_Button, QPushButton#Log_Button, QPushButton#min_Button, QPushButton#max_Button, QPushButton#quit_Button, QPushButton#Tool_Button, QPushButton#Setting_Button, QPushButton#Folder_Button {
-    border: none;
-    background: none;
 }

@@ -34,6 +34,12 @@ class Ui_MainWindow
 public:
     QWidget *centralwidget;
     QGridLayout *gridLayout;
+    QWidget *widget_3;
+    QHBoxLayout *horizontalLayout;
+    QSpacerItem *horizontalSpacer_3;
+    QPushButton *pushButton_18;
+    QPushButton *pushButton_17;
+    QPushButton *pushButton_19;
     QWidget *Sidebar_QWidget;
     QVBoxLayout *verticalLayout_3;
     QPushButton *Main_Button;
@@ -114,12 +120,6 @@ public:
     QGroupBox *groupBox_6;
     QGridLayout *gridLayout_8;
     QPlainTextEdit *Log_PlainTextEdit;
-    QWidget *widget_3;
-    QHBoxLayout *horizontalLayout;
-    QSpacerItem *horizontalSpacer_3;
-    QPushButton *min_Button;
-    QPushButton *max_Button;
-    QPushButton *quit_Button;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -128,7 +128,6 @@ public:
         MainWindow->resize(1920, 1080);
         MainWindow->setMinimumSize(QSize(1920, 1080));
         MainWindow->setMaximumSize(QSize(2560, 1440));
-        MainWindow->setStyleSheet(QString::fromUtf8(""));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
         gridLayout = new QGridLayout(centralwidget);
@@ -136,6 +135,42 @@ public:
         gridLayout->setHorizontalSpacing(0);
         gridLayout->setVerticalSpacing(6);
         gridLayout->setContentsMargins(0, 0, 0, 0);
+        widget_3 = new QWidget(centralwidget);
+        widget_3->setObjectName("widget_3");
+        widget_3->setMinimumSize(QSize(0, 50));
+        horizontalLayout = new QHBoxLayout(widget_3);
+        horizontalLayout->setObjectName("horizontalLayout");
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
+
+        horizontalLayout->addItem(horizontalSpacer_3);
+
+        pushButton_18 = new QPushButton(widget_3);
+        pushButton_18->setObjectName("pushButton_18");
+        pushButton_18->setMinimumSize(QSize(25, 25));
+        pushButton_18->setMaximumSize(QSize(25, 25));
+        pushButton_18->setIconSize(QSize(25, 25));
+
+        horizontalLayout->addWidget(pushButton_18);
+
+        pushButton_17 = new QPushButton(widget_3);
+        pushButton_17->setObjectName("pushButton_17");
+        pushButton_17->setMinimumSize(QSize(25, 25));
+        pushButton_17->setMaximumSize(QSize(25, 25));
+        pushButton_17->setIconSize(QSize(25, 25));
+
+        horizontalLayout->addWidget(pushButton_17);
+
+        pushButton_19 = new QPushButton(widget_3);
+        pushButton_19->setObjectName("pushButton_19");
+        pushButton_19->setMinimumSize(QSize(25, 25));
+        pushButton_19->setMaximumSize(QSize(25, 25));
+        pushButton_19->setIconSize(QSize(25, 25));
+
+        horizontalLayout->addWidget(pushButton_19);
+
+
+        gridLayout->addWidget(widget_3, 0, 1, 1, 3);
+
         Sidebar_QWidget = new QWidget(centralwidget);
         Sidebar_QWidget->setObjectName("Sidebar_QWidget");
         QSizePolicy sizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred);
@@ -147,12 +182,11 @@ public:
         verticalLayout_3 = new QVBoxLayout(Sidebar_QWidget);
         verticalLayout_3->setSpacing(15);
         verticalLayout_3->setObjectName("verticalLayout_3");
-        verticalLayout_3->setContentsMargins(14, 40, 14, 9);
         Main_Button = new QPushButton(Sidebar_QWidget);
         Main_Button->setObjectName("Main_Button");
         Main_Button->setMinimumSize(QSize(40, 40));
         Main_Button->setMaximumSize(QSize(40, 40));
-        Main_Button->setIconSize(QSize(40, 40));
+        Main_Button->setIconSize(QSize(30, 30));
 
         verticalLayout_3->addWidget(Main_Button);
 
@@ -160,7 +194,7 @@ public:
         Log_Button->setObjectName("Log_Button");
         Log_Button->setMinimumSize(QSize(40, 40));
         Log_Button->setMaximumSize(QSize(40, 40));
-        Log_Button->setIconSize(QSize(40, 40));
+        Log_Button->setIconSize(QSize(30, 30));
 
         verticalLayout_3->addWidget(Log_Button);
 
@@ -168,7 +202,7 @@ public:
         Tool_Button->setObjectName("Tool_Button");
         Tool_Button->setMinimumSize(QSize(40, 40));
         Tool_Button->setMaximumSize(QSize(40, 40));
-        Tool_Button->setIconSize(QSize(40, 40));
+        Tool_Button->setIconSize(QSize(30, 30));
 
         verticalLayout_3->addWidget(Tool_Button);
 
@@ -180,7 +214,7 @@ public:
         Folder_Button->setObjectName("Folder_Button");
         Folder_Button->setMinimumSize(QSize(40, 40));
         Folder_Button->setMaximumSize(QSize(40, 40));
-        Folder_Button->setIconSize(QSize(40, 40));
+        Folder_Button->setIconSize(QSize(30, 30));
 
         verticalLayout_3->addWidget(Folder_Button);
 
@@ -188,12 +222,12 @@ public:
         Setting_Button->setObjectName("Setting_Button");
         Setting_Button->setMinimumSize(QSize(40, 40));
         Setting_Button->setMaximumSize(QSize(40, 40));
-        Setting_Button->setIconSize(QSize(40, 40));
+        Setting_Button->setIconSize(QSize(30, 30));
 
         verticalLayout_3->addWidget(Setting_Button);
 
 
-        gridLayout->addWidget(Sidebar_QWidget, 0, 0, 2, 1);
+        gridLayout->addWidget(Sidebar_QWidget, 0, 0, 3, 1);
 
         stackedWidget = new QStackedWidget(centralwidget);
         stackedWidget->setObjectName("stackedWidget");
@@ -202,7 +236,7 @@ public:
         gridLayout_6 = new QGridLayout(page_5);
         gridLayout_6->setSpacing(10);
         gridLayout_6->setObjectName("gridLayout_6");
-        gridLayout_6->setContentsMargins(9, 0, 9, 9);
+        gridLayout_6->setContentsMargins(0, 0, 0, 0);
         widget = new QWidget(page_5);
         widget->setObjectName("widget");
         sizePolicy.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
@@ -572,7 +606,7 @@ public:
         page_6->setObjectName("page_6");
         gridLayout_7 = new QGridLayout(page_6);
         gridLayout_7->setObjectName("gridLayout_7");
-        gridLayout_7->setContentsMargins(9, 0, 9, 9);
+        gridLayout_7->setContentsMargins(0, 0, 0, 0);
         groupBox_6 = new QGroupBox(page_6);
         groupBox_6->setObjectName("groupBox_6");
         gridLayout_8 = new QGridLayout(groupBox_6);
@@ -587,44 +621,7 @@ public:
 
         stackedWidget->addWidget(page_6);
 
-        gridLayout->addWidget(stackedWidget, 1, 2, 1, 1);
-
-        widget_3 = new QWidget(centralwidget);
-        widget_3->setObjectName("widget_3");
-        widget_3->setMinimumSize(QSize(0, 50));
-        horizontalLayout = new QHBoxLayout(widget_3);
-        horizontalLayout->setObjectName("horizontalLayout");
-        horizontalLayout->setContentsMargins(9, -1, 9, -1);
-        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
-
-        horizontalLayout->addItem(horizontalSpacer_3);
-
-        min_Button = new QPushButton(widget_3);
-        min_Button->setObjectName("min_Button");
-        min_Button->setMinimumSize(QSize(25, 25));
-        min_Button->setMaximumSize(QSize(25, 25));
-        min_Button->setIconSize(QSize(25, 25));
-
-        horizontalLayout->addWidget(min_Button);
-
-        max_Button = new QPushButton(widget_3);
-        max_Button->setObjectName("max_Button");
-        max_Button->setMinimumSize(QSize(25, 25));
-        max_Button->setMaximumSize(QSize(25, 25));
-        max_Button->setIconSize(QSize(25, 25));
-
-        horizontalLayout->addWidget(max_Button);
-
-        quit_Button = new QPushButton(widget_3);
-        quit_Button->setObjectName("quit_Button");
-        quit_Button->setMinimumSize(QSize(25, 25));
-        quit_Button->setMaximumSize(QSize(25, 25));
-        quit_Button->setIconSize(QSize(25, 25));
-
-        horizontalLayout->addWidget(quit_Button);
-
-
-        gridLayout->addWidget(widget_3, 0, 1, 1, 3);
+        gridLayout->addWidget(stackedWidget, 2, 2, 1, 1);
 
         MainWindow->setCentralWidget(centralwidget);
 
@@ -639,6 +636,9 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "\345\265\214\345\205\245\345\274\217\344\270\273\350\275\246Windows\344\270\212\344\275\215\346\234\272", nullptr));
+        pushButton_18->setText(QString());
+        pushButton_17->setText(QString());
+        pushButton_19->setText(QString());
         Main_Button->setText(QString());
         Log_Button->setText(QString());
         Tool_Button->setText(QString());
@@ -690,9 +690,6 @@ public:
         VideoClose_Button->setText(QString());
         groupBox_2->setTitle(QCoreApplication::translate("MainWindow", "URL\347\233\256\346\240\207", nullptr));
         groupBox_6->setTitle(QCoreApplication::translate("MainWindow", "\346\227\245\345\277\227\350\276\223\345\207\272", nullptr));
-        min_Button->setText(QString());
-        max_Button->setText(QString());
-        quit_Button->setText(QString());
     } // retranslateUi
 
 };

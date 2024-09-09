@@ -25,9 +25,6 @@
   <property name="windowTitle">
    <string>嵌入式主车Windows上位机</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true"/>
-  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <property name="leftMargin">
@@ -48,7 +45,107 @@
     <property name="verticalSpacing">
      <number>6</number>
     </property>
-    <item row="0" column="0" rowspan="2">
+    <item row="0" column="1" colspan="3">
+     <widget class="QWidget" name="widget_3" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>50</height>
+       </size>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_18">
+         <property name="minimumSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_17">
+         <property name="minimumSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_19">
+         <property name="minimumSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>25</width>
+           <height>25</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="0" rowspan="3">
      <widget class="QWidget" name="Sidebar_QWidget" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -65,18 +162,6 @@
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <property name="spacing">
         <number>15</number>
-       </property>
-       <property name="leftMargin">
-        <number>14</number>
-       </property>
-       <property name="topMargin">
-        <number>40</number>
-       </property>
-       <property name="rightMargin">
-        <number>14</number>
-       </property>
-       <property name="bottomMargin">
-        <number>9</number>
        </property>
        <item>
         <widget class="QPushButton" name="Main_Button">
@@ -97,8 +182,8 @@
          </property>
          <property name="iconSize">
           <size>
-           <width>40</width>
-           <height>40</height>
+           <width>30</width>
+           <height>30</height>
           </size>
          </property>
         </widget>
@@ -122,8 +207,8 @@
          </property>
          <property name="iconSize">
           <size>
-           <width>40</width>
-           <height>40</height>
+           <width>30</width>
+           <height>30</height>
           </size>
          </property>
         </widget>
@@ -147,8 +232,8 @@
          </property>
          <property name="iconSize">
           <size>
-           <width>40</width>
-           <height>40</height>
+           <width>30</width>
+           <height>30</height>
           </size>
          </property>
         </widget>
@@ -185,8 +270,8 @@
          </property>
          <property name="iconSize">
           <size>
-           <width>40</width>
-           <height>40</height>
+           <width>30</width>
+           <height>30</height>
           </size>
          </property>
         </widget>
@@ -210,8 +295,8 @@
          </property>
          <property name="iconSize">
           <size>
-           <width>40</width>
-           <height>40</height>
+           <width>30</width>
+           <height>30</height>
           </size>
          </property>
         </widget>
@@ -219,7 +304,7 @@
       </layout>
      </widget>
     </item>
-    <item row="1" column="2">
+    <item row="2" column="2">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
        <number>0</number>
@@ -227,16 +312,16 @@
       <widget class="QWidget" name="page_5">
        <layout class="QGridLayout" name="gridLayout_6">
         <property name="leftMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <property name="topMargin">
          <number>0</number>
         </property>
         <property name="rightMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <property name="bottomMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <property name="spacing">
          <number>10</number>
@@ -822,16 +907,16 @@
       <widget class="QWidget" name="page_6">
        <layout class="QGridLayout" name="gridLayout_7">
         <property name="leftMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <property name="topMargin">
          <number>0</number>
         </property>
         <property name="rightMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <property name="bottomMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <item row="0" column="0">
          <widget class="QGroupBox" name="groupBox_6">
@@ -847,112 +932,6 @@
         </item>
        </layout>
       </widget>
-     </widget>
-    </item>
-    <item row="0" column="1" colspan="3">
-     <widget class="QWidget" name="widget_3" native="true">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>50</height>
-       </size>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <property name="leftMargin">
-        <number>9</number>
-       </property>
-       <property name="rightMargin">
-        <number>9</number>
-       </property>
-       <item>
-        <spacer name="horizontalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QPushButton" name="min_Button">
-         <property name="minimumSize">
-          <size>
-           <width>25</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>25</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>25</width>
-           <height>25</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="max_Button">
-         <property name="minimumSize">
-          <size>
-           <width>25</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>25</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>25</width>
-           <height>25</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="quit_Button">
-         <property name="minimumSize">
-          <size>
-           <width>25</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>25</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>25</width>
-           <height>25</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-      </layout>
      </widget>
     </item>
    </layout>
