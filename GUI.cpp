@@ -5,16 +5,15 @@
 #include "GUI.hpp"
 
 GUI::GUI() {
-    this->ui = new QMainWindow();
     uiMainWindow = new Ui_MainWindow();
+    this->ui = new UI::MainWindow();
     uiMainWindow->setupUi(ui);
-
-    this->ui->setWindowFlags(Qt::FramelessWindowHint);
-
 
     yolo = new YOLO();
 
     UI_init();
+
+    pVideoWidget = new UI::VideoWidget(uiMainWindow->groupBox, this);
 
     // 应用QSS样式表
     QFile file("styles.qss");
@@ -23,11 +22,9 @@ GUI::GUI() {
     this->ui->setStyleSheet(styleSheet);
     file.close();
 
-    pVideoWidget = new UI::VideoWidget(uiMainWindow->groupBox, this);
-
     // "https://bkrc.oss-cn-beijing.aliyuncs.com/videos/b4ee9ab9715217b2d3bf0479765233f8.mp4"
     // "rtsp://admin:888888@192.168.40.100:10554/tcp/av0_0"
-    QObject::connect(uiMainWindow->GetVideo_Button, &QPushButton::clicked, [this]() {
+    connect(uiMainWindow->GetVideo_Button, &QPushButton::clicked, [this]() {
         QString urlString = uiMainWindow->Url_Edit->text();
         QUrl url = QUrl(urlString);
         if (!url.isValid()) {
@@ -44,7 +41,7 @@ GUI::GUI() {
         //}
     });
 
-    QObject::connect(uiMainWindow->SelectModel_Button, &QPushButton::clicked, [this]() {
+    connect(uiMainWindow->SelectModel_Button, &QPushButton::clicked, [this]() {
         this->Model_flag = false;
         QString modelPath = "Model/" + uiMainWindow->comboBox_2->currentText();
         std::thread loadThread([this, modelPath] {
@@ -55,7 +52,7 @@ GUI::GUI() {
         loadThread.detach();
     });
 
-    QObject::connect(uiMainWindow->connect_Button, &QPushButton::clicked, [this]() {
+    connect(uiMainWindow->connect_Button, &QPushButton::clicked, [this]() {
         QString host = uiMainWindow->Host_Edit->text();
         quint16 port = uiMainWindow->Port_Edit->text().toUShort();
         // 主车IP地址192.168.40.254 端口号60000
@@ -67,12 +64,24 @@ GUI::GUI() {
         tcpUi->sendData("Hello, I am the Qt upper computer");
     });
 
-    QObject::connect(uiMainWindow->Main_Button, &QPushButton::clicked, [this]() {
+    connect(uiMainWindow->Main_Button, &QPushButton::clicked, [this]() {
         uiMainWindow->stackedWidget->setCurrentIndex(0);
     });
 
-    QObject::connect(uiMainWindow->Log_Button, &QPushButton::clicked, [this]() {
+    connect(uiMainWindow->Log_Button, &QPushButton::clicked, [this]() {
         uiMainWindow->stackedWidget->setCurrentIndex(1);
+    });
+
+    connect(uiMainWindow->min_Button, &QPushButton::clicked, [this](){
+        this->ui->showMinimized();
+    });
+
+    connect(uiMainWindow->max_Button, &QPushButton::clicked, [this](){
+        this->ui->showMaximized();
+    });
+
+    connect(uiMainWindow->quit_Button, &QPushButton::clicked, [](){
+        QApplication::quit();
     });
 }
 
@@ -92,9 +101,10 @@ void GUI::UI_init() {
 
     // 设置图标
     uiMainWindow->Main_Button->setIcon(QPixmap("Image/icon/首页.png"));
-    uiMainWindow->Main_Button->setStyleSheet("QPushButton { border: none; background: none; }");
     uiMainWindow->Log_Button->setIcon(QPixmap("Image/icon/日历.png"));
-    uiMainWindow->Log_Button->setStyleSheet("QPushButton { border: none; background: none; }");
+    uiMainWindow->min_Button->setIcon(QPixmap("Image/icon/最小化.png"));
+    uiMainWindow->max_Button->setIcon(QPixmap("Image/icon/最大化.png"));
+    uiMainWindow->quit_Button->setIcon(QPixmap("Image/icon/关闭.png"));
 
     // 日志输出组件初始化
     logWidget = new LogWidget(uiMainWindow->Log_PlainTextEdit);
@@ -201,6 +211,23 @@ void LogWidget::appendLog(const QString &message) {
 }
 
 namespace UI {
+    MainWindow::MainWindow() {
+        // 去掉标题栏 去掉窗口边框
+        this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinMaxButtonsHint);
+        // 设置窗口透明化
+        this->setAttribute(Qt::WA_TranslucentBackground);
+    }
+
+    void MainWindow::paintEvent(QPaintEvent *event) {
+        QWidget::paintEvent(event);
+        QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
+        painter.setBrush(QBrush(QColor(255, 255, 255)));
+        painter.setPen(Qt::transparent);
+        QRect rect = this->rect();
+        painter.drawRoundedRect(rect, 10, 10);  //设置窗口圆角 15px
+    }
+
     DrawQView::DrawQView() {
         // 初始化 QGraphicsView
         this->setScene(&scene);
@@ -414,6 +441,7 @@ namespace UI {
     }
 
     void VideoWidget::setVideoUrl(const QUrl qUrl) {
+        this->clear();
         player->setSource(qUrl);
 
         connect(player, &QMediaPlayer::durationChanged, this, [this](qint64 duration) {
@@ -479,5 +507,9 @@ namespace UI {
         gui->uiMainWindow->VideoTimer_Label->setText("00:00:00 / 00:00:00");
         // 设置为QUrl() 将导致播放器丢弃与当前媒体源有关的所有信息并停止与该媒体相关的所有 I/O 操作。
         player->setSource(QUrl());
+        disconnect(player, &QMediaPlayer::durationChanged, nullptr, nullptr);
+        disconnect(player, &QMediaPlayer::positionChanged, nullptr, nullptr);
+        disconnect(gui->uiMainWindow->VideoTimer_Slider, &QSlider::sliderPressed, nullptr, nullptr);
+        disconnect(gui->uiMainWindow->VideoTimer_Slider, &QSlider::sliderReleased, nullptr, nullptr);
     }
 }

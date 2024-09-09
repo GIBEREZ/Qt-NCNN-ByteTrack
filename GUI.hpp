@@ -16,7 +16,10 @@
 #include <QPlainTextEdit>
 #include <utility>
 #include <QGraphicsView>
+#include <QStyleOption>
+#include <QPainter>
 #include <QGraphicsTextItem>
+#include <QGraphicsDropShadowEffect>
 #include "TcpSocket.hpp"
 #include "ui.hpp"
 #include "ncnn_yolo.hpp"
@@ -60,6 +63,14 @@ private:
 };
 
 namespace UI {
+    class MainWindow : public QMainWindow {
+        Q_OBJECT
+    public:
+        MainWindow();
+    private:
+        void paintEvent(QPaintEvent *event) override;
+    };
+
     class DrawQView : public QGraphicsView {
         Q_OBJECT
     public:
@@ -78,7 +89,7 @@ namespace UI {
         float scaleX;
         float scaleY;
     protected:
-        // 场景变量
+        // 场景变量`
         QGraphicsScene scene;
     };
 
@@ -126,7 +137,7 @@ namespace UI {
     };
 }
 
-class GUI : public QMainWindow{
+class GUI : public QMainWindow {
     Q_OBJECT
 public:
     QMainWindow *ui;
