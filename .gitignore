@@ -1,6 +1,7 @@
 
 cmake-build-debug
 cmake-build-release
+.idea
 .idea/misc.xml
 .idea/modules.xml
 .idea/WIFI_Qt.iml
