@@ -699,34 +699,94 @@
           <layout class="QGridLayout" name="gridLayout_2">
            <item row="1" column="3">
             <widget class="QPushButton" name="VideoState_Button">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>35</width>
+               <height>35</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>35</width>
+               <height>35</height>
+              </size>
+             </property>
              <property name="text">
               <string/>
              </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>C:/Users/绮名桑/.designer/backup/Image/icon/暂停.png</normaloff>C:/Users/绮名桑/.designer/backup/Image/icon/暂停.png</iconset>
+             <property name="iconSize">
+              <size>
+               <width>35</width>
+               <height>35</height>
+              </size>
              </property>
             </widget>
            </item>
            <item row="1" column="4">
             <widget class="QPushButton" name="Forward_Button">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>35</width>
+               <height>35</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>35</width>
+               <height>35</height>
+              </size>
+             </property>
              <property name="text">
               <string/>
              </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>C:/Users/绮名桑/.designer/backup/Image/icon/后退.png</normaloff>C:/Users/绮名桑/.designer/backup/Image/icon/后退.png</iconset>
+             <property name="iconSize">
+              <size>
+               <width>30</width>
+               <height>30</height>
+              </size>
              </property>
             </widget>
            </item>
            <item row="1" column="2">
             <widget class="QPushButton" name="Regress_Button">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>35</width>
+               <height>35</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>35</width>
+               <height>35</height>
+              </size>
+             </property>
              <property name="text">
               <string/>
              </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>C:/Users/绮名桑/.designer/backup/Image/icon/快进.png</normaloff>C:/Users/绮名桑/.designer/backup/Image/icon/快进.png</iconset>
+             <property name="iconSize">
+              <size>
+               <width>30</width>
+               <height>30</height>
+              </size>
              </property>
             </widget>
            </item>
@@ -767,8 +827,32 @@
            </item>
            <item row="1" column="5">
             <widget class="QPushButton" name="VideoClose_Button">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>35</width>
+               <height>35</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>35</width>
+               <height>35</height>
+              </size>
+             </property>
              <property name="text">
               <string/>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>35</width>
+               <height>35</height>
+              </size>
              </property>
             </widget>
            </item>

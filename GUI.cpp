@@ -77,7 +77,12 @@ GUI::GUI() {
     });
 
     connect(uiMainWindow->max_Button, &QPushButton::clicked, [this](){
-        this->ui->showMaximized();
+        // 判断当前窗口是否已经最大化
+        if (this->ui->isMaximized()) {
+            this->ui->showNormal();
+        } else {
+            this->ui->showMaximized();
+        }
     });
 
     connect(uiMainWindow->quit_Button, &QPushButton::clicked, [](){
@@ -105,6 +110,10 @@ void GUI::UI_init() {
     uiMainWindow->min_Button->setIcon(QPixmap("Image/icon/最小化.png"));
     uiMainWindow->max_Button->setIcon(QPixmap("Image/icon/最大化.png"));
     uiMainWindow->quit_Button->setIcon(QPixmap("Image/icon/关闭.png"));
+    uiMainWindow->Regress_Button->setIcon(QPixmap("Image/icon/后退.png"));
+    uiMainWindow->VideoState_Button->setIcon(QPixmap("Image/icon/暂停.png"));
+    uiMainWindow->Forward_Button->setIcon(QPixmap("Image/icon/快进.png"));
+    uiMainWindow->VideoClose_Button->setIcon(QPixmap("Image/icon/终止.png"));
 
     // 日志输出组件初始化
     logWidget = new LogWidget(uiMainWindow->Log_PlainTextEdit);

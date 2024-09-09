@@ -10,7 +10,6 @@
 #define UI_H
 
 #include <QtCore/QVariant>
-#include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QGridLayout>
@@ -498,25 +497,34 @@ public:
         gridLayout_2->setObjectName("gridLayout_2");
         VideoState_Button = new QPushButton(groupBox);
         VideoState_Button->setObjectName("VideoState_Button");
-        QIcon icon;
-        icon.addFile(QString::fromUtf8("C:/Users/\347\273\256\345\220\215\346\241\221/.designer/backup/Image/icon/\346\232\202\345\201\234.png"), QSize(), QIcon::Normal, QIcon::Off);
-        VideoState_Button->setIcon(icon);
+        QSizePolicy sizePolicy8(QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Minimum);
+        sizePolicy8.setHorizontalStretch(0);
+        sizePolicy8.setVerticalStretch(0);
+        sizePolicy8.setHeightForWidth(VideoState_Button->sizePolicy().hasHeightForWidth());
+        VideoState_Button->setSizePolicy(sizePolicy8);
+        VideoState_Button->setMinimumSize(QSize(35, 35));
+        VideoState_Button->setMaximumSize(QSize(35, 35));
+        VideoState_Button->setIconSize(QSize(35, 35));
 
         gridLayout_2->addWidget(VideoState_Button, 1, 3, 1, 1);
 
         Forward_Button = new QPushButton(groupBox);
         Forward_Button->setObjectName("Forward_Button");
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8("C:/Users/\347\273\256\345\220\215\346\241\221/.designer/backup/Image/icon/\345\220\216\351\200\200.png"), QSize(), QIcon::Normal, QIcon::Off);
-        Forward_Button->setIcon(icon1);
+        sizePolicy8.setHeightForWidth(Forward_Button->sizePolicy().hasHeightForWidth());
+        Forward_Button->setSizePolicy(sizePolicy8);
+        Forward_Button->setMinimumSize(QSize(35, 35));
+        Forward_Button->setMaximumSize(QSize(35, 35));
+        Forward_Button->setIconSize(QSize(30, 30));
 
         gridLayout_2->addWidget(Forward_Button, 1, 4, 1, 1);
 
         Regress_Button = new QPushButton(groupBox);
         Regress_Button->setObjectName("Regress_Button");
-        QIcon icon2;
-        icon2.addFile(QString::fromUtf8("C:/Users/\347\273\256\345\220\215\346\241\221/.designer/backup/Image/icon/\345\277\253\350\277\233.png"), QSize(), QIcon::Normal, QIcon::Off);
-        Regress_Button->setIcon(icon2);
+        sizePolicy8.setHeightForWidth(Regress_Button->sizePolicy().hasHeightForWidth());
+        Regress_Button->setSizePolicy(sizePolicy8);
+        Regress_Button->setMinimumSize(QSize(35, 35));
+        Regress_Button->setMaximumSize(QSize(35, 35));
+        Regress_Button->setIconSize(QSize(30, 30));
 
         gridLayout_2->addWidget(Regress_Button, 1, 2, 1, 1);
 
@@ -538,6 +546,11 @@ public:
 
         VideoClose_Button = new QPushButton(groupBox);
         VideoClose_Button->setObjectName("VideoClose_Button");
+        sizePolicy8.setHeightForWidth(VideoClose_Button->sizePolicy().hasHeightForWidth());
+        VideoClose_Button->setSizePolicy(sizePolicy8);
+        VideoClose_Button->setMinimumSize(QSize(35, 35));
+        VideoClose_Button->setMaximumSize(QSize(35, 35));
+        VideoClose_Button->setIconSize(QSize(35, 35));
 
         gridLayout_2->addWidget(VideoClose_Button, 1, 5, 1, 1);
 
