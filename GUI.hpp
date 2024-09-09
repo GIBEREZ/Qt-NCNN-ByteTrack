@@ -77,6 +77,7 @@ namespace UI {
         explicit DrawQView();
         // 重写监听事件禁用鼠标滚动处理
         void wheelEvent(QWheelEvent *event) override;
+        void resizeEvent(QResizeEvent *event) override;
         void setDrawQViemRect();
         void onUpdateAABB(const std::vector<STrack>& output_stracks);
         // 目标检测
@@ -88,6 +89,9 @@ namespace UI {
         // 缩放因子
         float scaleX;
         float scaleY;
+    signals:
+        // 视图变化信号
+        void viewChanged();
     protected:
         // 场景变量`
         QGraphicsScene scene;
@@ -105,6 +109,8 @@ namespace UI {
         void resume();
     signals:
         void updateAABB(const std::vector<STrack>& output_stracks);
+    private slots:
+        void onViewChanged();
     private:
         GUI *gui;
         QVideoSink *videoSink;

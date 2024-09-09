@@ -254,6 +254,12 @@ namespace UI {
         event->ignore();
     }
 
+    void DrawQView::resizeEvent(QResizeEvent *event) {
+        QGraphicsView::resizeEvent(event);
+        this->setDrawQViemRect();
+        emit viewChanged();
+    }
+
     void DrawQView::setDrawQViemRect() {
         scene.setSceneRect(0, 0, this->width(), this->height());
     }
@@ -305,6 +311,7 @@ namespace UI {
     YOLOThread::YOLOThread(GUI *gui, QVideoSink *videoSink, QObject *parent): QThread(parent), gui(gui), videoSink(videoSink){
         this->drawQView = new DrawQView();
         gui->uiMainWindow->gridLayout_2->addWidget(this->drawQView, 0, 0, 1, 6);
+        connect(drawQView, &DrawQView::viewChanged, this, &YOLOThread::onViewChanged);
     }
 
     void YOLOThread::run() {
@@ -313,8 +320,8 @@ namespace UI {
         auto lastTime = std::chrono::high_resolution_clock::now();
         int frameCount = 0;
         double fps = 0.0;
-        bool ScalingFactor = false;
-        BYTETracker tracker(60, 3000);
+        this->onViewChanged();
+        BYTETracker tracker(60, 600);
         // 自动加锁
         QMutexLocker locker(&mutex);
         while (true) {
@@ -340,16 +347,6 @@ namespace UI {
             }
             std::vector<Object> objects;
             QImage image = videoSink->videoFrame().toImage();
-            if (!ScalingFactor)
-            {
-                ScalingFactor = true;
-                std::cout << drawQView->width() << "x" << drawQView->height() << std::endl;
-                float scaleX = static_cast<float>(drawQView->width()) / static_cast<float>(image.width());
-                float scaleY = static_cast<float>(drawQView->height()) / static_cast<float>(image.height());
-                drawQView->scaleX = scaleX;
-                drawQView->scaleY = scaleY;
-                drawQView->setDrawQViemRect();
-            }
 
             gui->yolo->detect(image, objects);
             vector<STrack> output_stracks = tracker.update(objects);
@@ -379,6 +376,16 @@ namespace UI {
     void YOLOThread::resume() {
         paused = false;
         waitCondition.wakeOne(); // 唤醒等待的线程
+    }
+
+    void YOLOThread::onViewChanged() {
+        // 调整缩放因子
+        std::cout << drawQView->width() << "x" << drawQView->height() << std::endl;
+        float scaleX = static_cast<float>(drawQView->width()) / static_cast<float>(videoSink->videoFrame().toImage().width());
+        float scaleY = static_cast<float>(drawQView->height()) / static_cast<float>(videoSink->videoFrame().toImage().height());
+        drawQView->scaleX = scaleX;
+        drawQView->scaleY = scaleY;
+        drawQView->setDrawQViemRect();
     }
 
     VideoWidget::VideoWidget(QWidget *parent, GUI *gui) : QWidget(parent), m_frame(QImage()), gui(gui) {
