@@ -34,11 +34,6 @@ GUI::GUI() {
         std::cout << "有效URL" << std::endl;
 
         pVideoWidget->setVideoUrl(url);
-
-        //std::thread yoloThread = std::thread(&GUI::yolohandle, this, yolo, urlString.toStdString());
-        //if (yoloThread.joinable()) {
-        //    yoloThread.detach();
-        //}
     });
 
     connect(uiMainWindow->SelectModel_Button, &QPushButton::clicked, [this]() {
@@ -80,8 +75,10 @@ GUI::GUI() {
         // 判断当前窗口是否已经最大化
         if (this->ui->isMaximized()) {
             this->ui->showNormal();
+            this->uiMainWindow->gridLayout->setContentsMargins(18, 18, 18, 18);
         } else {
             this->ui->showMaximized();
+            this->uiMainWindow->gridLayout->setContentsMargins(0, 0, 0, 0);
         }
     });
 
@@ -224,18 +221,85 @@ namespace UI {
         // 去掉标题栏 去掉窗口边框
         this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinMaxButtonsHint);
         // 设置窗口透明化
-        this->setAttribute(Qt::WA_TranslucentBackground);
+        this->setAttribute(Qt::WA_TranslucentBackground, true);
+        this->setAttribute(Qt::WA_StyledBackground, true);
+
+        // 创建阴影效果对象
+        QGraphicsDropShadowEffect *shadowEffect = new QGraphicsDropShadowEffect(this);
+        shadowEffect->setBlurRadius(20);          // 阴影模糊半径
+        shadowEffect->setOffset(10, 10);          // 阴影的偏移量
+        shadowEffect->setColor(Qt::black);        // 阴影颜色
+        // 应用阴影效果
+        this->setGraphicsEffect(shadowEffect);
     }
 
     void MainWindow::paintEvent(QPaintEvent *event) {
         QWidget::paintEvent(event);
         QPainter painter(this);
-        painter.setRenderHint(QPainter::Antialiasing);  // 反锯齿;
-        painter.setBrush(QBrush(QColor(255, 255, 255)));
-        painter.setPen(Qt::transparent);
+        // 反锯齿
+        painter.setRenderHint(QPainter::Antialiasing);
+
+        // 获取坐标
         QRect rect = this->rect();
-        painter.drawRoundedRect(rect, 10, 10);  //设置窗口圆角 15px
+
+        // 圆角和阴影参数
+        int offset = 18;        // 内部距
+        int cornerRadius = 10;  // 圆角半径
+
+        if (this->isMaximized()) {
+            // 绘制圆角矩形
+            painter.setBrush(QBrush(QColor(255, 255, 255))); // 圆角矩形的填充颜色
+            QRect adjustedRect(rect);
+            painter.setPen(Qt::NoPen);
+            painter.drawRoundedRect(adjustedRect, 0, 0);
+        }
+        else {
+            // 绘制圆角矩形
+            painter.setBrush(QBrush(QColor(255, 255, 255))); // 圆角矩形的填充颜色
+            QRect adjustedRect(rect.left() + offset, rect.top() + offset,
+                               rect.width() - (offset * 2), rect.height() - (offset * 2));
+            painter.setPen(Qt::NoPen);
+            painter.drawRoundedRect(adjustedRect, cornerRadius, cornerRadius);
+        }
     }
+
+    void MainWindow::mousePressEvent(QMouseEvent *event) {
+        QWidget::mousePressEvent(event);
+        this->setFocus();
+        if (Qt::LeftButton == event->button() && 0 == (Qt::WindowMaximized & this->windowState())) {
+            this->mousePressPosition = event->globalPos();
+            event->ignore();
+        }
+        // 标记鼠标为按下状态
+        this->isMousePressed = true;
+    }
+
+    void MainWindow::mouseMoveEvent(QMouseEvent *event) {
+        QWidget::mouseMoveEvent(event);
+        // 如果当前是最大化，则不允许移动
+        if (this->isMaximized())
+            return;
+        // 是否左击
+        if ((event->buttons() & Qt::LeftButton) && this->isMousePressed) {
+            // 当前鼠标全局位置
+            QPoint currentMousePos = event->globalPos();
+            // 计算鼠标移动的相对位移
+            QPoint delta = currentMousePos - this->mousePressPosition;
+            // 移动窗口到新的位置
+            move(this->pos() + delta);
+            // 更新鼠标按下的位置，以便下次计算移动
+            this->mousePressPosition = currentMousePos;
+        }
+    }
+
+    void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
+        QWidget::mouseReleaseEvent(event);
+        // 恢复鼠标指针状态
+        QApplication::restoreOverrideCursor();
+        event->ignore();
+        this->isMousePressed = false;
+    }
+
 
     DrawQView::DrawQView() {
         // 初始化 QGraphicsView
@@ -330,12 +394,13 @@ namespace UI {
         int frameCount = 0;
         double fps = 0.0;
         this->onViewChanged();
-        BYTETracker tracker(60, 600);
+        BYTETracker tracker(60, 3000);
         // 自动加锁
         QMutexLocker locker(&mutex);
         while (true) {
             if (!state) {
                 disconnect(this, &YOLOThread::updateAABB, drawQView, &DrawQView::onUpdateAABB);
+                std::cout << "已释放YOLOThread线程run函数" << std::endl;
                 break;
             }
 
@@ -445,8 +510,9 @@ namespace UI {
                 // 执行自定义任务
                 qDebug() << "播放结束，执行任务";
                 yoloThread->state = false;
+                qDebug() << "标志位完成设置";
                 yoloThread->requestInterruption();
-                yoloThread->wait();
+                qDebug() << "线程强制中断完毕";
             }
         });
     };

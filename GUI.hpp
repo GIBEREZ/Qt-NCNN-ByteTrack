@@ -5,6 +5,11 @@
 #ifndef WIFI_QT_GUI_HPP
 #define WIFI_QT_GUI_HPP
 
+#include <dwmapi.h>
+#include <windows.h>
+extern "C" {
+    #pragma comment(lib, "dwmapi.lib")
+}
 #include <QMainWindow>
 #include <QtMultimedia>
 #include <vector>
@@ -69,6 +74,11 @@ namespace UI {
         MainWindow();
     private:
         void paintEvent(QPaintEvent *event) override;
+        void mousePressEvent(QMouseEvent *event) override;
+        void mouseMoveEvent(QMouseEvent * event) override;
+        void mouseReleaseEvent(QMouseEvent * event) override;
+        QPoint mousePressPosition;
+        bool isMousePressed;
     };
 
     class DrawQView : public QGraphicsView {

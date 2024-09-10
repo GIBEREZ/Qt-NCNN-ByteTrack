@@ -56,6 +56,13 @@ link_libraries(libmysql)
 include_directories(${OPENGL_INCLUDE_DIRS})
 link_directories(${OpenCV_LIBRARIES})
 
+# 手动指定 Windows SDK 的头文件路径
+include_directories("C:/Program Files (x86)/Windows Kits/10/Include/10.0.22621.0/um")
+include_directories("C:/Program Files (x86)/Windows Kits/10/Include/10.0.22621.0/shared")
+# 手动指定 Windows SDK 的库文件路径
+link_directories("C:/Program Files (x86)/Windows Kits/10/Lib/10.0.22621.0/um/x64")
+link_directories("C:/Program Files (x86)/Windows Kits/10/Lib/10.0.22621.0/shared/x64")
+
 add_executable(WIFI_Qt main.cpp
         GUI.hpp
         GUI.cpp
@@ -95,6 +102,9 @@ target_link_libraries(WIFI_Qt
         swresample
         swscale
         Eigen3::Eigen
+        user32
+        gdi32
+        dwmapi
 )
 
 add_custom_command(TARGET WIFI_Qt POST_BUILD

@@ -33,14 +33,12 @@ class Ui_MainWindow
 public:
     QWidget *centralwidget;
     QGridLayout *gridLayout;
-    QWidget *Sidebar_QWidget;
-    QVBoxLayout *verticalLayout_3;
-    QPushButton *Main_Button;
-    QPushButton *Log_Button;
-    QPushButton *Tool_Button;
-    QSpacerItem *verticalSpacer_2;
-    QPushButton *Folder_Button;
-    QPushButton *Setting_Button;
+    QWidget *widget_3;
+    QHBoxLayout *horizontalLayout;
+    QSpacerItem *horizontalSpacer_3;
+    QPushButton *min_Button;
+    QPushButton *max_Button;
+    QPushButton *quit_Button;
     QStackedWidget *stackedWidget;
     QWidget *page_5;
     QGridLayout *gridLayout_6;
@@ -97,14 +95,14 @@ public:
     QPushButton *SendChar_Button;
     QGroupBox *groupBox;
     QGridLayout *gridLayout_2;
-    QPushButton *VideoState_Button;
     QPushButton *Forward_Button;
     QPushButton *Regress_Button;
-    QSlider *VideoTimer_Slider;
-    QLabel *VideoTimer_Label;
-    QPushButton *VideoClose_Button;
     QWidget *Video_Widget;
     QGridLayout *gridLayout_10;
+    QPushButton *VideoState_Button;
+    QPushButton *VideoClose_Button;
+    QLabel *VideoTimer_Label;
+    QSlider *VideoTimer_Slider;
     QGroupBox *groupBox_2;
     QVBoxLayout *verticalLayout_2;
     QLineEdit *Url_Edit;
@@ -113,12 +111,14 @@ public:
     QGroupBox *groupBox_6;
     QGridLayout *gridLayout_8;
     QPlainTextEdit *Log_PlainTextEdit;
-    QWidget *widget_3;
-    QHBoxLayout *horizontalLayout;
-    QSpacerItem *horizontalSpacer_3;
-    QPushButton *min_Button;
-    QPushButton *max_Button;
-    QPushButton *quit_Button;
+    QWidget *Sidebar_QWidget;
+    QVBoxLayout *verticalLayout_3;
+    QPushButton *Main_Button;
+    QPushButton *Log_Button;
+    QPushButton *Tool_Button;
+    QSpacerItem *verticalSpacer_2;
+    QPushButton *Folder_Button;
+    QPushButton *Setting_Button;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -134,65 +134,43 @@ public:
         gridLayout->setObjectName("gridLayout");
         gridLayout->setHorizontalSpacing(0);
         gridLayout->setVerticalSpacing(6);
-        gridLayout->setContentsMargins(0, 0, 0, 0);
-        Sidebar_QWidget = new QWidget(centralwidget);
-        Sidebar_QWidget->setObjectName("Sidebar_QWidget");
-        QSizePolicy sizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(Sidebar_QWidget->sizePolicy().hasHeightForWidth());
-        Sidebar_QWidget->setSizePolicy(sizePolicy);
-        Sidebar_QWidget->setMinimumSize(QSize(0, 0));
-        verticalLayout_3 = new QVBoxLayout(Sidebar_QWidget);
-        verticalLayout_3->setSpacing(15);
-        verticalLayout_3->setObjectName("verticalLayout_3");
-        verticalLayout_3->setContentsMargins(14, 40, 14, 9);
-        Main_Button = new QPushButton(Sidebar_QWidget);
-        Main_Button->setObjectName("Main_Button");
-        Main_Button->setMinimumSize(QSize(40, 40));
-        Main_Button->setMaximumSize(QSize(40, 40));
-        Main_Button->setIconSize(QSize(40, 40));
+        gridLayout->setContentsMargins(18, 18, 18, 18);
+        widget_3 = new QWidget(centralwidget);
+        widget_3->setObjectName("widget_3");
+        widget_3->setMinimumSize(QSize(0, 50));
+        horizontalLayout = new QHBoxLayout(widget_3);
+        horizontalLayout->setObjectName("horizontalLayout");
+        horizontalLayout->setContentsMargins(9, -1, 9, -1);
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
 
-        verticalLayout_3->addWidget(Main_Button);
+        horizontalLayout->addItem(horizontalSpacer_3);
 
-        Log_Button = new QPushButton(Sidebar_QWidget);
-        Log_Button->setObjectName("Log_Button");
-        Log_Button->setMinimumSize(QSize(40, 40));
-        Log_Button->setMaximumSize(QSize(40, 40));
-        Log_Button->setIconSize(QSize(40, 40));
+        min_Button = new QPushButton(widget_3);
+        min_Button->setObjectName("min_Button");
+        min_Button->setMinimumSize(QSize(25, 25));
+        min_Button->setMaximumSize(QSize(25, 25));
+        min_Button->setIconSize(QSize(25, 25));
 
-        verticalLayout_3->addWidget(Log_Button);
+        horizontalLayout->addWidget(min_Button);
 
-        Tool_Button = new QPushButton(Sidebar_QWidget);
-        Tool_Button->setObjectName("Tool_Button");
-        Tool_Button->setMinimumSize(QSize(40, 40));
-        Tool_Button->setMaximumSize(QSize(40, 40));
-        Tool_Button->setIconSize(QSize(40, 40));
+        max_Button = new QPushButton(widget_3);
+        max_Button->setObjectName("max_Button");
+        max_Button->setMinimumSize(QSize(25, 25));
+        max_Button->setMaximumSize(QSize(25, 25));
+        max_Button->setIconSize(QSize(25, 25));
 
-        verticalLayout_3->addWidget(Tool_Button);
+        horizontalLayout->addWidget(max_Button);
 
-        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
+        quit_Button = new QPushButton(widget_3);
+        quit_Button->setObjectName("quit_Button");
+        quit_Button->setMinimumSize(QSize(25, 25));
+        quit_Button->setMaximumSize(QSize(25, 25));
+        quit_Button->setIconSize(QSize(25, 25));
 
-        verticalLayout_3->addItem(verticalSpacer_2);
-
-        Folder_Button = new QPushButton(Sidebar_QWidget);
-        Folder_Button->setObjectName("Folder_Button");
-        Folder_Button->setMinimumSize(QSize(40, 40));
-        Folder_Button->setMaximumSize(QSize(40, 40));
-        Folder_Button->setIconSize(QSize(40, 40));
-
-        verticalLayout_3->addWidget(Folder_Button);
-
-        Setting_Button = new QPushButton(Sidebar_QWidget);
-        Setting_Button->setObjectName("Setting_Button");
-        Setting_Button->setMinimumSize(QSize(40, 40));
-        Setting_Button->setMaximumSize(QSize(40, 40));
-        Setting_Button->setIconSize(QSize(40, 40));
-
-        verticalLayout_3->addWidget(Setting_Button);
+        horizontalLayout->addWidget(quit_Button);
 
 
-        gridLayout->addWidget(Sidebar_QWidget, 0, 0, 2, 1);
+        gridLayout->addWidget(widget_3, 0, 1, 1, 3);
 
         stackedWidget = new QStackedWidget(centralwidget);
         stackedWidget->setObjectName("stackedWidget");
@@ -204,6 +182,9 @@ public:
         gridLayout_6->setContentsMargins(9, 0, 9, 9);
         widget = new QWidget(page_5);
         widget->setObjectName("widget");
+        QSizePolicy sizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
         widget->setSizePolicy(sizePolicy);
         widget->setMinimumSize(QSize(380, 0));
@@ -495,21 +476,11 @@ public:
         groupBox->setMinimumSize(QSize(640, 480));
         gridLayout_2 = new QGridLayout(groupBox);
         gridLayout_2->setObjectName("gridLayout_2");
-        VideoState_Button = new QPushButton(groupBox);
-        VideoState_Button->setObjectName("VideoState_Button");
+        Forward_Button = new QPushButton(groupBox);
+        Forward_Button->setObjectName("Forward_Button");
         QSizePolicy sizePolicy8(QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Minimum);
         sizePolicy8.setHorizontalStretch(0);
         sizePolicy8.setVerticalStretch(0);
-        sizePolicy8.setHeightForWidth(VideoState_Button->sizePolicy().hasHeightForWidth());
-        VideoState_Button->setSizePolicy(sizePolicy8);
-        VideoState_Button->setMinimumSize(QSize(35, 35));
-        VideoState_Button->setMaximumSize(QSize(35, 35));
-        VideoState_Button->setIconSize(QSize(35, 35));
-
-        gridLayout_2->addWidget(VideoState_Button, 1, 3, 1, 1);
-
-        Forward_Button = new QPushButton(groupBox);
-        Forward_Button->setObjectName("Forward_Button");
         sizePolicy8.setHeightForWidth(Forward_Button->sizePolicy().hasHeightForWidth());
         Forward_Button->setSizePolicy(sizePolicy8);
         Forward_Button->setMinimumSize(QSize(35, 35));
@@ -528,21 +499,23 @@ public:
 
         gridLayout_2->addWidget(Regress_Button, 1, 2, 1, 1);
 
-        VideoTimer_Slider = new QSlider(groupBox);
-        VideoTimer_Slider->setObjectName("VideoTimer_Slider");
-        VideoTimer_Slider->setOrientation(Qt::Horizontal);
+        Video_Widget = new QWidget(groupBox);
+        Video_Widget->setObjectName("Video_Widget");
+        gridLayout_10 = new QGridLayout(Video_Widget);
+        gridLayout_10->setObjectName("gridLayout_10");
+        gridLayout_10->setContentsMargins(0, 0, 0, 0);
 
-        gridLayout_2->addWidget(VideoTimer_Slider, 1, 0, 1, 1);
+        gridLayout_2->addWidget(Video_Widget, 0, 0, 1, 6);
 
-        VideoTimer_Label = new QLabel(groupBox);
-        VideoTimer_Label->setObjectName("VideoTimer_Label");
-        VideoTimer_Label->setMinimumSize(QSize(150, 30));
-        VideoTimer_Label->setMaximumSize(QSize(150, 30));
-        VideoTimer_Label->setLayoutDirection(Qt::LeftToRight);
-        VideoTimer_Label->setTextFormat(Qt::AutoText);
-        VideoTimer_Label->setAlignment(Qt::AlignCenter);
+        VideoState_Button = new QPushButton(groupBox);
+        VideoState_Button->setObjectName("VideoState_Button");
+        sizePolicy8.setHeightForWidth(VideoState_Button->sizePolicy().hasHeightForWidth());
+        VideoState_Button->setSizePolicy(sizePolicy8);
+        VideoState_Button->setMinimumSize(QSize(35, 35));
+        VideoState_Button->setMaximumSize(QSize(35, 35));
+        VideoState_Button->setIconSize(QSize(35, 35));
 
-        gridLayout_2->addWidget(VideoTimer_Label, 1, 1, 1, 1);
+        gridLayout_2->addWidget(VideoState_Button, 1, 3, 1, 1);
 
         VideoClose_Button = new QPushButton(groupBox);
         VideoClose_Button->setObjectName("VideoClose_Button");
@@ -554,13 +527,21 @@ public:
 
         gridLayout_2->addWidget(VideoClose_Button, 1, 5, 1, 1);
 
-        Video_Widget = new QWidget(groupBox);
-        Video_Widget->setObjectName("Video_Widget");
-        gridLayout_10 = new QGridLayout(Video_Widget);
-        gridLayout_10->setObjectName("gridLayout_10");
-        gridLayout_10->setContentsMargins(0, 0, 0, 0);
+        VideoTimer_Label = new QLabel(groupBox);
+        VideoTimer_Label->setObjectName("VideoTimer_Label");
+        VideoTimer_Label->setMinimumSize(QSize(150, 30));
+        VideoTimer_Label->setMaximumSize(QSize(150, 30));
+        VideoTimer_Label->setLayoutDirection(Qt::LeftToRight);
+        VideoTimer_Label->setTextFormat(Qt::AutoText);
+        VideoTimer_Label->setAlignment(Qt::AlignCenter);
 
-        gridLayout_2->addWidget(Video_Widget, 0, 0, 1, 6);
+        gridLayout_2->addWidget(VideoTimer_Label, 1, 1, 1, 1);
+
+        VideoTimer_Slider = new QSlider(groupBox);
+        VideoTimer_Slider->setObjectName("VideoTimer_Slider");
+        VideoTimer_Slider->setOrientation(Qt::Horizontal);
+
+        gridLayout_2->addWidget(VideoTimer_Slider, 1, 0, 1, 1);
 
 
         gridLayout_6->addWidget(groupBox, 1, 1, 1, 1);
@@ -602,42 +583,61 @@ public:
 
         gridLayout->addWidget(stackedWidget, 1, 2, 1, 1);
 
-        widget_3 = new QWidget(centralwidget);
-        widget_3->setObjectName("widget_3");
-        widget_3->setMinimumSize(QSize(0, 50));
-        horizontalLayout = new QHBoxLayout(widget_3);
-        horizontalLayout->setObjectName("horizontalLayout");
-        horizontalLayout->setContentsMargins(9, -1, 9, -1);
-        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
+        Sidebar_QWidget = new QWidget(centralwidget);
+        Sidebar_QWidget->setObjectName("Sidebar_QWidget");
+        sizePolicy.setHeightForWidth(Sidebar_QWidget->sizePolicy().hasHeightForWidth());
+        Sidebar_QWidget->setSizePolicy(sizePolicy);
+        Sidebar_QWidget->setMinimumSize(QSize(0, 0));
+        verticalLayout_3 = new QVBoxLayout(Sidebar_QWidget);
+        verticalLayout_3->setSpacing(15);
+        verticalLayout_3->setObjectName("verticalLayout_3");
+        verticalLayout_3->setContentsMargins(14, 40, 14, 9);
+        Main_Button = new QPushButton(Sidebar_QWidget);
+        Main_Button->setObjectName("Main_Button");
+        Main_Button->setMinimumSize(QSize(40, 40));
+        Main_Button->setMaximumSize(QSize(40, 40));
+        Main_Button->setIconSize(QSize(40, 40));
 
-        horizontalLayout->addItem(horizontalSpacer_3);
+        verticalLayout_3->addWidget(Main_Button);
 
-        min_Button = new QPushButton(widget_3);
-        min_Button->setObjectName("min_Button");
-        min_Button->setMinimumSize(QSize(25, 25));
-        min_Button->setMaximumSize(QSize(25, 25));
-        min_Button->setIconSize(QSize(25, 25));
+        Log_Button = new QPushButton(Sidebar_QWidget);
+        Log_Button->setObjectName("Log_Button");
+        Log_Button->setMinimumSize(QSize(40, 40));
+        Log_Button->setMaximumSize(QSize(40, 40));
+        Log_Button->setIconSize(QSize(40, 40));
 
-        horizontalLayout->addWidget(min_Button);
+        verticalLayout_3->addWidget(Log_Button);
 
-        max_Button = new QPushButton(widget_3);
-        max_Button->setObjectName("max_Button");
-        max_Button->setMinimumSize(QSize(25, 25));
-        max_Button->setMaximumSize(QSize(25, 25));
-        max_Button->setIconSize(QSize(25, 25));
+        Tool_Button = new QPushButton(Sidebar_QWidget);
+        Tool_Button->setObjectName("Tool_Button");
+        Tool_Button->setMinimumSize(QSize(40, 40));
+        Tool_Button->setMaximumSize(QSize(40, 40));
+        Tool_Button->setIconSize(QSize(40, 40));
 
-        horizontalLayout->addWidget(max_Button);
+        verticalLayout_3->addWidget(Tool_Button);
 
-        quit_Button = new QPushButton(widget_3);
-        quit_Button->setObjectName("quit_Button");
-        quit_Button->setMinimumSize(QSize(25, 25));
-        quit_Button->setMaximumSize(QSize(25, 25));
-        quit_Button->setIconSize(QSize(25, 25));
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
 
-        horizontalLayout->addWidget(quit_Button);
+        verticalLayout_3->addItem(verticalSpacer_2);
+
+        Folder_Button = new QPushButton(Sidebar_QWidget);
+        Folder_Button->setObjectName("Folder_Button");
+        Folder_Button->setMinimumSize(QSize(40, 40));
+        Folder_Button->setMaximumSize(QSize(40, 40));
+        Folder_Button->setIconSize(QSize(40, 40));
+
+        verticalLayout_3->addWidget(Folder_Button);
+
+        Setting_Button = new QPushButton(Sidebar_QWidget);
+        Setting_Button->setObjectName("Setting_Button");
+        Setting_Button->setMinimumSize(QSize(40, 40));
+        Setting_Button->setMaximumSize(QSize(40, 40));
+        Setting_Button->setIconSize(QSize(40, 40));
+
+        verticalLayout_3->addWidget(Setting_Button);
 
 
-        gridLayout->addWidget(widget_3, 0, 1, 1, 3);
+        gridLayout->addWidget(Sidebar_QWidget, 0, 0, 2, 1);
 
         MainWindow->setCentralWidget(centralwidget);
 
@@ -652,11 +652,9 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "\345\265\214\345\205\245\345\274\217\344\270\273\350\275\246Windows\344\270\212\344\275\215\346\234\272", nullptr));
-        Main_Button->setText(QString());
-        Log_Button->setText(QString());
-        Tool_Button->setText(QString());
-        Folder_Button->setText(QString());
-        Setting_Button->setText(QString());
+        min_Button->setText(QString());
+        max_Button->setText(QString());
+        quit_Button->setText(QString());
         groupBox_3->setTitle(QCoreApplication::translate("MainWindow", "\350\256\276\347\275\256", nullptr));
         NetworkStatusLabel->setText(QCoreApplication::translate("MainWindow", "\346\234\252\350\277\236\346\216\245", nullptr));
         GetVideo_Button->setText(QCoreApplication::translate("MainWindow", "\350\216\267\345\217\226\350\247\206\351\242\221\346\216\250\346\265\201", nullptr));
@@ -696,16 +694,18 @@ public:
         pushButton_11->setText(QString());
         SendChar_Button->setText(QCoreApplication::translate("MainWindow", "\345\217\221\351\200\201\344\277\241\346\201\257", nullptr));
         groupBox->setTitle(QCoreApplication::translate("MainWindow", "\350\247\206\351\242\221\346\216\250\346\265\201", nullptr));
-        VideoState_Button->setText(QString());
         Forward_Button->setText(QString());
         Regress_Button->setText(QString());
-        VideoTimer_Label->setText(QCoreApplication::translate("MainWindow", "00:00:00 / 00:00:00", nullptr));
+        VideoState_Button->setText(QString());
         VideoClose_Button->setText(QString());
+        VideoTimer_Label->setText(QCoreApplication::translate("MainWindow", "00:00:00 / 00:00:00", nullptr));
         groupBox_2->setTitle(QCoreApplication::translate("MainWindow", "URL\347\233\256\346\240\207", nullptr));
         groupBox_6->setTitle(QCoreApplication::translate("MainWindow", "\346\227\245\345\277\227\350\276\223\345\207\272", nullptr));
-        min_Button->setText(QString());
-        max_Button->setText(QString());
-        quit_Button->setText(QString());
+        Main_Button->setText(QString());
+        Log_Button->setText(QString());
+        Tool_Button->setText(QString());
+        Folder_Button->setText(QString());
+        Setting_Button->setText(QString());
     } // retranslateUi
 
 };
