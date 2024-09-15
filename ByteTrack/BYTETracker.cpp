@@ -14,6 +14,7 @@ BYTETracker::BYTETracker(int frame_rate, int track_buffer)
 
 BYTETracker::~BYTETracker()
 {
+
 }
 
 vector<STrack> BYTETracker::update(vector<Object>& objects)

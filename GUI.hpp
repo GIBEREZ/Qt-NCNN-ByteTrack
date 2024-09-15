@@ -25,10 +25,12 @@ extern "C" {
 #include <QPainter>
 #include <QGraphicsTextItem>
 #include <QGraphicsDropShadowEffect>
+#include "Mark.hpp"
 #include "TcpSocket.hpp"
 #include "ui.hpp"
 #include "ncnn_yolo.hpp"
 #include "TcpSocket.hpp"
+#include "uiBeautify.hpp"
 #include "ByteTrack/BYTETracker.h"
 
 class TcpUI;
@@ -111,6 +113,7 @@ namespace UI {
         Q_OBJECT
     public:
         bool state = false;
+        DrawQView *drawQView;
     public:
         explicit YOLOThread(GUI *gui, QVideoSink *videoSink, QObject *parent);
         void updateByteTrack(BYTETracker &tracker, std::vector<STrack> &output_stracks);
@@ -124,7 +127,6 @@ namespace UI {
     private:
         GUI *gui;
         QVideoSink *videoSink;
-        DrawQView *drawQView;
         QMutex mutex;
         QWaitCondition waitCondition;
         bool paused = false;

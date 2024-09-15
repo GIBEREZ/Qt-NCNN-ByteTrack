@@ -2,14 +2,116 @@ QMainWindow#MainWindow {
 
 }
 
+QWidget#centralwidget {
+    border-radius: 10px;
+    margin: 18px;
+    border: 2px solid black;
+
+}
+
 QWidget#Sidebar_QWidget {
+    margin: 2px;
     background-color: lightgray;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
+}
+/**正常情况下样式**/
+QPushButton {
+	font: 10pt "微软雅黑";
+    color: #2f3640;
+    background-color: #FFFFFF;
+    border-color: #78B4F9;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 2px;
+    padding: 5px;
+}
+/**鼠标停留在按钮上的样式**/
+QPushButton::hover {
+    color: #FFFFFF;
+    background-color: #78B4F9;
+    border-color: #78B4F9;
+}
+/**鼠标按压下去的样式**/
+QPushButton::pressed, QPushButton::checked {
+    color: #FFFFFF;
+    background-color: #5075D6;
+}
+/**按钮失能情况下样式**/
+QPushButton::disabled {
+    color: #FFFFFF;
+    background-color: #dcdde1;
+    border-color: #dcdde1;
 }
 
 QPushButton#Main_Button, QPushButton#Log_Button, QPushButton#min_Button, QPushButton#max_Button, QPushButton#quit_Button, QPushButton#Tool_Button,
 QPushButton#Setting_Button, QPushButton#Folder_Button, QPushButton#Regress_Button, QPushButton#VideoState_Button, QPushButton#Forward_Button, QPushButton#VideoClose_Button {
     border: none;
     background: none;
+}
+
+QLabel#NetworkStatusLabel {
+    background-color: red;
+    color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    padding: 5px;
+}
+
+/* 下拉框整体样式 */
+QComboBox {
+    border: 2px solid #78B4F9;
+    border-radius: 8px;
+    padding: 4px 24px 4px 8px;
+    min-width: 8em;
+    background: #f9f9f9;
+    font: bold 12px;
+}
+
+/* 下拉框按钮的样式 */
+QComboBox::drop-down {
+    subcontrol-position: right center;
+    width: 20px;
+    border-left: 2px solid #78B4F9;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    background: #78B4F9; /* 背景颜色 */
+}
+
+/* 下拉框弹出列表的样式 */
+QComboBox QAbstractItemView {
+    border: 2px solid #78B4F9;
+    selection-background-color: #78B4F9;    /* 选中项的背景颜色 */
+    selection-color: block;                 /* 选中项的文字颜色 */
+    alternate-background-color: #f2f2f2;    /* 交替行背景颜色 */
+    background: white; /* 背景颜色 */
+    padding: 4px;
+    outline: 0px;
+}
+
+/* 下拉框项的样式 */
+QComboBox QAbstractItemView::item {
+    padding: 4px;
+    border-radius: 4px;
+}
+
+/* 下拉框项悬停效果 */
+QComboBox QAbstractItemView::item:hover {
+    background: #d0e0ff;
+}
+
+/* 圆角和边框的输入框样式 */
+QLineEdit {
+    border: 2px solid #ccc;         /* 边框颜色 */
+    border-radius: 8px;             /* 圆角 */
+    padding: 6px 12px;              /* 内边距，控制输入文本距离边框的距离 */
+    background-color: #f9f9f9;      /* 背景颜色 */
+    font: 14px Arial, sans-serif;   /* 字体设置 */
+    color: #333;                    /* 文本颜色 */
+}
+
+/* 输入框获得焦点时的效果 */
+QLineEdit:focus {
+    border: 2px solid #78B4F9;  /* 焦点时的边框颜色 */
+    background-color: #ffffff;  /* 焦点时的背景颜色 */
 }

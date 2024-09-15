@@ -55,18 +55,15 @@ public:
     QLabel *label_3;
     QGroupBox *groupBox_7;
     QGridLayout *gridLayout_9;
-    QPushButton *pushButton_8;
-    QPushButton *pushButton_4;
-    QPushButton *pushButton_20;
-    QPushButton *pushButton_21;
-    QPushButton *pushButton_6;
     QPushButton *pushButton_23;
-    QPushButton *pushButton_9;
-    QPushButton *pushButton_22;
     QPushButton *pushButton_24;
     QPushButton *pushButton_25;
-    QPushButton *pushButton_26;
+    QPushButton *pushButton_21;
     QPushButton *pushButton_27;
+    QPushButton *pushButton_20;
+    QPushButton *pushButton_9;
+    QPushButton *pushButton_6;
+    QPushButton *pushButton_4;
     QGroupBox *groupBox_4;
     QGridLayout *gridLayout_4;
     QLabel *label_4;
@@ -80,32 +77,31 @@ public:
     QLineEdit *Host_Edit;
     QGroupBox *groupBox_5;
     QGridLayout *gridLayout_5;
-    QPushButton *pushButton_13;
-    QPushButton *pushButton_14;
-    QPushButton *SendBin_Edit;
-    QPushButton *SendHex_Button;
-    QLineEdit *ZigBee_Edit;
-    QPushButton *pushButton_10;
-    QPushButton *pushButton_15;
     QSpacerItem *horizontalSpacer;
-    QLabel *label_9;
-    QSpacerItem *verticalSpacer;
+    QPushButton *pushButton_13;
     QPushButton *pushButton_12;
+    QLabel *label_9;
     QPushButton *pushButton_11;
+    QLineEdit *ZigBee_Edit;
     QPushButton *SendChar_Button;
+    QPushButton *SendBin_Edit;
+    QPushButton *pushButton_15;
+    QPushButton *SendHex_Button;
+    QPushButton *pushButton_14;
+    QPushButton *pushButton_10;
+    QGroupBox *groupBox_2;
+    QVBoxLayout *verticalLayout_2;
+    QLineEdit *Url_Edit;
     QGroupBox *groupBox;
     QGridLayout *gridLayout_2;
     QPushButton *Forward_Button;
     QPushButton *Regress_Button;
-    QWidget *Video_Widget;
-    QGridLayout *gridLayout_10;
     QPushButton *VideoState_Button;
     QPushButton *VideoClose_Button;
-    QLabel *VideoTimer_Label;
     QSlider *VideoTimer_Slider;
-    QGroupBox *groupBox_2;
-    QVBoxLayout *verticalLayout_2;
-    QLineEdit *Url_Edit;
+    QLabel *VideoTimer_Label;
+    QWidget *Video_Widget;
+    QGridLayout *gridLayout_10;
     QWidget *page_6;
     QGridLayout *gridLayout_7;
     QGroupBox *groupBox_6;
@@ -113,6 +109,7 @@ public:
     QPlainTextEdit *Log_PlainTextEdit;
     QWidget *Sidebar_QWidget;
     QVBoxLayout *verticalLayout_3;
+    QLabel *Head_QLabel;
     QPushButton *Main_Button;
     QPushButton *Log_Button;
     QPushButton *Tool_Button;
@@ -130,6 +127,7 @@ public:
         MainWindow->setStyleSheet(QString::fromUtf8(""));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
+        centralwidget->setStyleSheet(QString::fromUtf8(""));
         gridLayout = new QGridLayout(centralwidget);
         gridLayout->setObjectName("gridLayout");
         gridLayout->setHorizontalSpacing(0);
@@ -259,45 +257,10 @@ public:
         groupBox_7->setObjectName("groupBox_7");
         gridLayout_9 = new QGridLayout(groupBox_7);
         gridLayout_9->setObjectName("gridLayout_9");
-        pushButton_8 = new QPushButton(groupBox_7);
-        pushButton_8->setObjectName("pushButton_8");
-
-        gridLayout_9->addWidget(pushButton_8, 0, 2, 1, 1);
-
-        pushButton_4 = new QPushButton(groupBox_7);
-        pushButton_4->setObjectName("pushButton_4");
-
-        gridLayout_9->addWidget(pushButton_4, 0, 0, 1, 1);
-
-        pushButton_20 = new QPushButton(groupBox_7);
-        pushButton_20->setObjectName("pushButton_20");
-
-        gridLayout_9->addWidget(pushButton_20, 1, 0, 1, 1);
-
-        pushButton_21 = new QPushButton(groupBox_7);
-        pushButton_21->setObjectName("pushButton_21");
-
-        gridLayout_9->addWidget(pushButton_21, 1, 1, 1, 1);
-
-        pushButton_6 = new QPushButton(groupBox_7);
-        pushButton_6->setObjectName("pushButton_6");
-
-        gridLayout_9->addWidget(pushButton_6, 0, 1, 1, 1);
-
         pushButton_23 = new QPushButton(groupBox_7);
         pushButton_23->setObjectName("pushButton_23");
 
-        gridLayout_9->addWidget(pushButton_23, 1, 3, 1, 1);
-
-        pushButton_9 = new QPushButton(groupBox_7);
-        pushButton_9->setObjectName("pushButton_9");
-
-        gridLayout_9->addWidget(pushButton_9, 0, 3, 1, 1);
-
-        pushButton_22 = new QPushButton(groupBox_7);
-        pushButton_22->setObjectName("pushButton_22");
-
-        gridLayout_9->addWidget(pushButton_22, 1, 2, 1, 1);
+        gridLayout_9->addWidget(pushButton_23, 1, 2, 1, 1);
 
         pushButton_24 = new QPushButton(groupBox_7);
         pushButton_24->setObjectName("pushButton_24");
@@ -309,15 +272,35 @@ public:
 
         gridLayout_9->addWidget(pushButton_25, 2, 1, 1, 1);
 
-        pushButton_26 = new QPushButton(groupBox_7);
-        pushButton_26->setObjectName("pushButton_26");
+        pushButton_21 = new QPushButton(groupBox_7);
+        pushButton_21->setObjectName("pushButton_21");
 
-        gridLayout_9->addWidget(pushButton_26, 2, 2, 1, 1);
+        gridLayout_9->addWidget(pushButton_21, 1, 1, 1, 1);
 
         pushButton_27 = new QPushButton(groupBox_7);
         pushButton_27->setObjectName("pushButton_27");
 
-        gridLayout_9->addWidget(pushButton_27, 2, 3, 1, 1);
+        gridLayout_9->addWidget(pushButton_27, 2, 2, 1, 1);
+
+        pushButton_20 = new QPushButton(groupBox_7);
+        pushButton_20->setObjectName("pushButton_20");
+
+        gridLayout_9->addWidget(pushButton_20, 1, 0, 1, 1);
+
+        pushButton_9 = new QPushButton(groupBox_7);
+        pushButton_9->setObjectName("pushButton_9");
+
+        gridLayout_9->addWidget(pushButton_9, 0, 2, 1, 1);
+
+        pushButton_6 = new QPushButton(groupBox_7);
+        pushButton_6->setObjectName("pushButton_6");
+
+        gridLayout_9->addWidget(pushButton_6, 0, 1, 1, 1);
+
+        pushButton_4 = new QPushButton(groupBox_7);
+        pushButton_4->setObjectName("pushButton_4");
+
+        gridLayout_9->addWidget(pushButton_4, 0, 0, 1, 1);
 
 
         verticalLayout->addWidget(groupBox_7);
@@ -395,44 +378,19 @@ public:
         groupBox_5->setObjectName("groupBox_5");
         gridLayout_5 = new QGridLayout(groupBox_5);
         gridLayout_5->setObjectName("gridLayout_5");
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
+
+        gridLayout_5->addItem(horizontalSpacer, 2, 0, 1, 3);
+
         pushButton_13 = new QPushButton(groupBox_5);
         pushButton_13->setObjectName("pushButton_13");
 
         gridLayout_5->addWidget(pushButton_13, 3, 2, 1, 1);
 
-        pushButton_14 = new QPushButton(groupBox_5);
-        pushButton_14->setObjectName("pushButton_14");
+        pushButton_12 = new QPushButton(groupBox_5);
+        pushButton_12->setObjectName("pushButton_12");
 
-        gridLayout_5->addWidget(pushButton_14, 3, 3, 1, 1);
-
-        SendBin_Edit = new QPushButton(groupBox_5);
-        SendBin_Edit->setObjectName("SendBin_Edit");
-
-        gridLayout_5->addWidget(SendBin_Edit, 3, 1, 1, 1);
-
-        SendHex_Button = new QPushButton(groupBox_5);
-        SendHex_Button->setObjectName("SendHex_Button");
-
-        gridLayout_5->addWidget(SendHex_Button, 3, 0, 1, 1);
-
-        ZigBee_Edit = new QLineEdit(groupBox_5);
-        ZigBee_Edit->setObjectName("ZigBee_Edit");
-
-        gridLayout_5->addWidget(ZigBee_Edit, 1, 0, 1, 4);
-
-        pushButton_10 = new QPushButton(groupBox_5);
-        pushButton_10->setObjectName("pushButton_10");
-
-        gridLayout_5->addWidget(pushButton_10, 4, 0, 1, 1);
-
-        pushButton_15 = new QPushButton(groupBox_5);
-        pushButton_15->setObjectName("pushButton_15");
-
-        gridLayout_5->addWidget(pushButton_15, 4, 3, 1, 1);
-
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
-
-        gridLayout_5->addItem(horizontalSpacer, 2, 0, 1, 3);
+        gridLayout_5->addWidget(pushButton_12, 4, 2, 1, 1);
 
         label_9 = new QLabel(groupBox_5);
         label_9->setObjectName("label_9");
@@ -441,30 +399,66 @@ public:
 
         gridLayout_5->addWidget(label_9, 0, 0, 1, 4);
 
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
-
-        gridLayout_5->addItem(verticalSpacer, 5, 0, 1, 1);
-
-        pushButton_12 = new QPushButton(groupBox_5);
-        pushButton_12->setObjectName("pushButton_12");
-
-        gridLayout_5->addWidget(pushButton_12, 4, 2, 1, 1);
-
         pushButton_11 = new QPushButton(groupBox_5);
         pushButton_11->setObjectName("pushButton_11");
 
         gridLayout_5->addWidget(pushButton_11, 4, 1, 1, 1);
+
+        ZigBee_Edit = new QLineEdit(groupBox_5);
+        ZigBee_Edit->setObjectName("ZigBee_Edit");
+
+        gridLayout_5->addWidget(ZigBee_Edit, 1, 0, 1, 4);
 
         SendChar_Button = new QPushButton(groupBox_5);
         SendChar_Button->setObjectName("SendChar_Button");
 
         gridLayout_5->addWidget(SendChar_Button, 2, 3, 1, 1);
 
+        SendBin_Edit = new QPushButton(groupBox_5);
+        SendBin_Edit->setObjectName("SendBin_Edit");
+
+        gridLayout_5->addWidget(SendBin_Edit, 3, 1, 1, 1);
+
+        pushButton_15 = new QPushButton(groupBox_5);
+        pushButton_15->setObjectName("pushButton_15");
+
+        gridLayout_5->addWidget(pushButton_15, 4, 3, 1, 1);
+
+        SendHex_Button = new QPushButton(groupBox_5);
+        SendHex_Button->setObjectName("SendHex_Button");
+
+        gridLayout_5->addWidget(SendHex_Button, 3, 0, 1, 1);
+
+        pushButton_14 = new QPushButton(groupBox_5);
+        pushButton_14->setObjectName("pushButton_14");
+
+        gridLayout_5->addWidget(pushButton_14, 3, 3, 1, 1);
+
+        pushButton_10 = new QPushButton(groupBox_5);
+        pushButton_10->setObjectName("pushButton_10");
+
+        gridLayout_5->addWidget(pushButton_10, 4, 0, 1, 1);
+
 
         verticalLayout->addWidget(groupBox_5);
 
 
         gridLayout_6->addWidget(widget, 1, 0, 1, 1);
+
+        groupBox_2 = new QGroupBox(page_5);
+        groupBox_2->setObjectName("groupBox_2");
+        sizePolicy2.setHeightForWidth(groupBox_2->sizePolicy().hasHeightForWidth());
+        groupBox_2->setSizePolicy(sizePolicy2);
+        groupBox_2->setMaximumSize(QSize(16777215, 16777215));
+        verticalLayout_2 = new QVBoxLayout(groupBox_2);
+        verticalLayout_2->setObjectName("verticalLayout_2");
+        Url_Edit = new QLineEdit(groupBox_2);
+        Url_Edit->setObjectName("Url_Edit");
+
+        verticalLayout_2->addWidget(Url_Edit);
+
+
+        gridLayout_6->addWidget(groupBox_2, 0, 0, 1, 2);
 
         groupBox = new QGroupBox(page_5);
         groupBox->setObjectName("groupBox");
@@ -499,14 +493,6 @@ public:
 
         gridLayout_2->addWidget(Regress_Button, 1, 2, 1, 1);
 
-        Video_Widget = new QWidget(groupBox);
-        Video_Widget->setObjectName("Video_Widget");
-        gridLayout_10 = new QGridLayout(Video_Widget);
-        gridLayout_10->setObjectName("gridLayout_10");
-        gridLayout_10->setContentsMargins(0, 0, 0, 0);
-
-        gridLayout_2->addWidget(Video_Widget, 0, 0, 1, 6);
-
         VideoState_Button = new QPushButton(groupBox);
         VideoState_Button->setObjectName("VideoState_Button");
         sizePolicy8.setHeightForWidth(VideoState_Button->sizePolicy().hasHeightForWidth());
@@ -527,6 +513,12 @@ public:
 
         gridLayout_2->addWidget(VideoClose_Button, 1, 5, 1, 1);
 
+        VideoTimer_Slider = new QSlider(groupBox);
+        VideoTimer_Slider->setObjectName("VideoTimer_Slider");
+        VideoTimer_Slider->setOrientation(Qt::Horizontal);
+
+        gridLayout_2->addWidget(VideoTimer_Slider, 1, 0, 1, 1);
+
         VideoTimer_Label = new QLabel(groupBox);
         VideoTimer_Label->setObjectName("VideoTimer_Label");
         VideoTimer_Label->setMinimumSize(QSize(150, 30));
@@ -537,29 +529,16 @@ public:
 
         gridLayout_2->addWidget(VideoTimer_Label, 1, 1, 1, 1);
 
-        VideoTimer_Slider = new QSlider(groupBox);
-        VideoTimer_Slider->setObjectName("VideoTimer_Slider");
-        VideoTimer_Slider->setOrientation(Qt::Horizontal);
+        Video_Widget = new QWidget(groupBox);
+        Video_Widget->setObjectName("Video_Widget");
+        gridLayout_10 = new QGridLayout(Video_Widget);
+        gridLayout_10->setObjectName("gridLayout_10");
+        gridLayout_10->setContentsMargins(0, 0, 0, 0);
 
-        gridLayout_2->addWidget(VideoTimer_Slider, 1, 0, 1, 1);
+        gridLayout_2->addWidget(Video_Widget, 0, 0, 1, 6);
 
 
         gridLayout_6->addWidget(groupBox, 1, 1, 1, 1);
-
-        groupBox_2 = new QGroupBox(page_5);
-        groupBox_2->setObjectName("groupBox_2");
-        sizePolicy2.setHeightForWidth(groupBox_2->sizePolicy().hasHeightForWidth());
-        groupBox_2->setSizePolicy(sizePolicy2);
-        groupBox_2->setMaximumSize(QSize(16777215, 16777215));
-        verticalLayout_2 = new QVBoxLayout(groupBox_2);
-        verticalLayout_2->setObjectName("verticalLayout_2");
-        Url_Edit = new QLineEdit(groupBox_2);
-        Url_Edit->setObjectName("Url_Edit");
-
-        verticalLayout_2->addWidget(Url_Edit);
-
-
-        gridLayout_6->addWidget(groupBox_2, 0, 0, 1, 2);
 
         stackedWidget->addWidget(page_5);
         page_6 = new QWidget();
@@ -588,15 +567,43 @@ public:
         sizePolicy.setHeightForWidth(Sidebar_QWidget->sizePolicy().hasHeightForWidth());
         Sidebar_QWidget->setSizePolicy(sizePolicy);
         Sidebar_QWidget->setMinimumSize(QSize(0, 0));
+        Sidebar_QWidget->setCursor(QCursor(Qt::ArrowCursor));
+        Sidebar_QWidget->setMouseTracking(false);
+        Sidebar_QWidget->setTabletTracking(false);
+        Sidebar_QWidget->setAcceptDrops(false);
+#if QT_CONFIG(accessibility)
+        Sidebar_QWidget->setAccessibleName(QString::fromUtf8(""));
+#endif // QT_CONFIG(accessibility)
+#if QT_CONFIG(accessibility)
+        Sidebar_QWidget->setAccessibleDescription(QString::fromUtf8(""));
+#endif // QT_CONFIG(accessibility)
+        Sidebar_QWidget->setLayoutDirection(Qt::LeftToRight);
+        Sidebar_QWidget->setAutoFillBackground(false);
         verticalLayout_3 = new QVBoxLayout(Sidebar_QWidget);
-        verticalLayout_3->setSpacing(15);
+        verticalLayout_3->setSpacing(14);
         verticalLayout_3->setObjectName("verticalLayout_3");
         verticalLayout_3->setContentsMargins(14, 40, 14, 9);
+        Head_QLabel = new QLabel(Sidebar_QWidget);
+        Head_QLabel->setObjectName("Head_QLabel");
+        Head_QLabel->setMinimumSize(QSize(50, 50));
+        Head_QLabel->setMaximumSize(QSize(50, 50));
+        Head_QLabel->setStyleSheet(QString::fromUtf8(""));
+        Head_QLabel->setScaledContents(true);
+        Head_QLabel->setAlignment(Qt::AlignCenter);
+        Head_QLabel->setWordWrap(false);
+        Head_QLabel->setOpenExternalLinks(false);
+
+        verticalLayout_3->addWidget(Head_QLabel);
+
         Main_Button = new QPushButton(Sidebar_QWidget);
         Main_Button->setObjectName("Main_Button");
         Main_Button->setMinimumSize(QSize(40, 40));
         Main_Button->setMaximumSize(QSize(40, 40));
+        Main_Button->setCursor(QCursor(Qt::PointingHandCursor));
+        Main_Button->setLayoutDirection(Qt::LeftToRight);
         Main_Button->setIconSize(QSize(40, 40));
+        Main_Button->setAutoDefault(false);
+        Main_Button->setFlat(false);
 
         verticalLayout_3->addWidget(Main_Button);
 
@@ -604,6 +611,7 @@ public:
         Log_Button->setObjectName("Log_Button");
         Log_Button->setMinimumSize(QSize(40, 40));
         Log_Button->setMaximumSize(QSize(40, 40));
+        Log_Button->setCursor(QCursor(Qt::PointingHandCursor));
         Log_Button->setIconSize(QSize(40, 40));
 
         verticalLayout_3->addWidget(Log_Button);
@@ -612,6 +620,7 @@ public:
         Tool_Button->setObjectName("Tool_Button");
         Tool_Button->setMinimumSize(QSize(40, 40));
         Tool_Button->setMaximumSize(QSize(40, 40));
+        Tool_Button->setCursor(QCursor(Qt::PointingHandCursor));
         Tool_Button->setIconSize(QSize(40, 40));
 
         verticalLayout_3->addWidget(Tool_Button);
@@ -624,6 +633,7 @@ public:
         Folder_Button->setObjectName("Folder_Button");
         Folder_Button->setMinimumSize(QSize(40, 40));
         Folder_Button->setMaximumSize(QSize(40, 40));
+        Folder_Button->setCursor(QCursor(Qt::PointingHandCursor));
         Folder_Button->setIconSize(QSize(40, 40));
 
         verticalLayout_3->addWidget(Folder_Button);
@@ -632,6 +642,7 @@ public:
         Setting_Button->setObjectName("Setting_Button");
         Setting_Button->setMinimumSize(QSize(40, 40));
         Setting_Button->setMaximumSize(QSize(40, 40));
+        Setting_Button->setCursor(QCursor(Qt::PointingHandCursor));
         Setting_Button->setIconSize(QSize(40, 40));
 
         verticalLayout_3->addWidget(Setting_Button);
@@ -644,6 +655,7 @@ public:
         retranslateUi(MainWindow);
 
         stackedWidget->setCurrentIndex(0);
+        Main_Button->setDefault(false);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -662,18 +674,15 @@ public:
         SelectModel_Button->setText(QCoreApplication::translate("MainWindow", "\345\212\240\350\275\275\346\250\241\345\236\213", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "\347\212\266\346\200\201\357\274\232", nullptr));
         groupBox_7->setTitle(QCoreApplication::translate("MainWindow", "\345\233\276\345\203\217\345\212\237\350\203\275", nullptr));
-        pushButton_8->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
-        pushButton_4->setText(QCoreApplication::translate("MainWindow", "\350\256\241\347\256\227\347\211\251\345\223\201\351\253\230\345\272\246", nullptr));
-        pushButton_20->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
-        pushButton_21->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
-        pushButton_6->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
         pushButton_23->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
-        pushButton_9->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
-        pushButton_22->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
         pushButton_24->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
         pushButton_25->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
-        pushButton_26->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
+        pushButton_21->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
         pushButton_27->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
+        pushButton_20->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
+        pushButton_9->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
+        pushButton_6->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
+        pushButton_4->setText(QCoreApplication::translate("MainWindow", "\350\256\241\347\256\227\347\211\251\345\223\201\351\253\230\345\272\246", nullptr));
         groupBox_4->setTitle(QCoreApplication::translate("MainWindow", "\347\275\221\347\273\234\344\277\241\346\201\257", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "Port", nullptr));
         IPv4Label->setText(QCoreApplication::translate("MainWindow", "IPv4\345\234\260\345\235\200\357\274\232", nullptr));
@@ -684,23 +693,24 @@ public:
         connect_Button->setText(QCoreApplication::translate("MainWindow", "\350\277\236\346\216\245\347\233\256\346\240\207\350\256\276\345\244\207", nullptr));
         groupBox_5->setTitle(QCoreApplication::translate("MainWindow", "\351\200\232\350\256\257\345\212\237\350\203\275", nullptr));
         pushButton_13->setText(QString());
-        pushButton_14->setText(QString());
-        SendBin_Edit->setText(QCoreApplication::translate("MainWindow", "\345\217\221\351\200\201Bin\344\277\241\346\201\257", nullptr));
-        SendHex_Button->setText(QCoreApplication::translate("MainWindow", "\345\217\221\351\200\201Hex\344\277\241\346\201\257", nullptr));
-        pushButton_10->setText(QString());
-        pushButton_15->setText(QString());
-        label_9->setText(QCoreApplication::translate("MainWindow", "\345\276\205\345\217\221\351\200\201\347\232\204\344\277\241\346\201\257\357\274\232", nullptr));
         pushButton_12->setText(QString());
+        label_9->setText(QCoreApplication::translate("MainWindow", "\345\276\205\345\217\221\351\200\201\347\232\204\344\277\241\346\201\257\357\274\232", nullptr));
         pushButton_11->setText(QString());
         SendChar_Button->setText(QCoreApplication::translate("MainWindow", "\345\217\221\351\200\201\344\277\241\346\201\257", nullptr));
+        SendBin_Edit->setText(QCoreApplication::translate("MainWindow", "\345\217\221\351\200\201Bin\344\277\241\346\201\257", nullptr));
+        pushButton_15->setText(QString());
+        SendHex_Button->setText(QCoreApplication::translate("MainWindow", "\345\217\221\351\200\201Hex\344\277\241\346\201\257", nullptr));
+        pushButton_14->setText(QString());
+        pushButton_10->setText(QString());
+        groupBox_2->setTitle(QCoreApplication::translate("MainWindow", "URL\347\233\256\346\240\207", nullptr));
         groupBox->setTitle(QCoreApplication::translate("MainWindow", "\350\247\206\351\242\221\346\216\250\346\265\201", nullptr));
         Forward_Button->setText(QString());
         Regress_Button->setText(QString());
         VideoState_Button->setText(QString());
         VideoClose_Button->setText(QString());
         VideoTimer_Label->setText(QCoreApplication::translate("MainWindow", "00:00:00 / 00:00:00", nullptr));
-        groupBox_2->setTitle(QCoreApplication::translate("MainWindow", "URL\347\233\256\346\240\207", nullptr));
         groupBox_6->setTitle(QCoreApplication::translate("MainWindow", "\346\227\245\345\277\227\350\276\223\345\207\272", nullptr));
+        Head_QLabel->setText(QString());
         Main_Button->setText(QString());
         Log_Button->setText(QString());
         Tool_Button->setText(QString());

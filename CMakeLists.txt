@@ -81,6 +81,9 @@ add_executable(WIFI_Qt main.cpp
         ByteTrack/STrack.h
         ByteTrack/STrack.cpp
         ByteTrack/utils.cpp
+        Mark.hpp
+        uiBeautify.hpp
+        uiBeautify.cpp
 )
 
 target_link_libraries(WIFI_Qt

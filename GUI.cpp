@@ -112,6 +112,21 @@ void GUI::UI_init() {
     uiMainWindow->Forward_Button->setIcon(QPixmap("Image/icon/快进.png"));
     uiMainWindow->VideoClose_Button->setIcon(QPixmap("Image/icon/终止.png"));
 
+    QPixmap pixmap("Image/头像.png");
+    // 创建和 QLabel 一样大小的 pixmap
+    QPixmap roundedPixmap(uiMainWindow->Head_QLabel->size());
+    roundedPixmap.fill(Qt::transparent);  // 透明背景
+    QPainter painter(&roundedPixmap);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+    // 定义圆角矩形路径
+    QPainterPath path;
+    path.addRoundedRect(roundedPixmap.rect(), 40, 40);  // 圆角半径为 20
+    painter.setClipPath(path);
+    // 绘制图片
+    painter.drawPixmap(0, 0, uiMainWindow->Head_QLabel->width(), uiMainWindow->Head_QLabel->height(), pixmap);
+    // 将圆角图片设置到 QLabel
+    uiMainWindow->Head_QLabel->setPixmap(roundedPixmap);
     // 日志输出组件初始化
     logWidget = new LogWidget(uiMainWindow->Log_PlainTextEdit);
 }
@@ -225,12 +240,12 @@ namespace UI {
         this->setAttribute(Qt::WA_StyledBackground, true);
 
         // 创建阴影效果对象
-        QGraphicsDropShadowEffect *shadowEffect = new QGraphicsDropShadowEffect(this);
-        shadowEffect->setBlurRadius(20);          // 阴影模糊半径
-        shadowEffect->setOffset(10, 10);          // 阴影的偏移量
-        shadowEffect->setColor(Qt::black);        // 阴影颜色
+        //QGraphicsDropShadowEffect *shadowEffect = new QGraphicsDropShadowEffect(this);
+        //shadowEffect->setBlurRadius(20);          // 阴影模糊半径
+        //shadowEffect->setOffset(10, 10);          // 阴影的偏移量
+        //shadowEffect->setColor(Qt::black);        // 阴影颜色
         // 应用阴影效果
-        this->setGraphicsEffect(shadowEffect);
+        //this->setGraphicsEffect(shadowEffect);
     }
 
     void MainWindow::paintEvent(QPaintEvent *event) {
@@ -238,12 +253,10 @@ namespace UI {
         QPainter painter(this);
         // 反锯齿
         painter.setRenderHint(QPainter::Antialiasing);
-
         // 获取坐标
         QRect rect = this->rect();
-
-        // 圆角和阴影参数
-        int offset = 18;        // 内部距
+        // 内边距和圆角半径
+        int offset = 18;        // 内边距
         int cornerRadius = 10;  // 圆角半径
 
         if (this->isMaximized()) {
@@ -266,6 +279,10 @@ namespace UI {
     void MainWindow::mousePressEvent(QMouseEvent *event) {
         QWidget::mousePressEvent(event);
         this->setFocus();
+        if (Qt::LeftButton == event->button()) {
+            AM::clickEffect *clickEffect = new AM::clickEffect(this);
+            clickEffect->showEffect(emojis[QRandomGenerator::global()->bounded(emojiCount)], event->globalPos());
+        }
         if (Qt::LeftButton == event->button() && 0 == (Qt::WindowMaximized & this->windowState())) {
             this->mousePressPosition = event->globalPos();
             event->ignore();
@@ -344,6 +361,10 @@ namespace UI {
     void DrawQView::draw_AABB(const std::vector<STrack>& output_stracks) {
         // 绘制之前清空场景中的所有项
         scene.clear();
+        if (scaleX == 0 & scaleY == 0) {
+            draw_clear();
+            return;
+        }
         // 遍历 results 列表，绘制每个 AABB 和标签
         for (const auto& strack : output_stracks) {
             // 修正尺寸
@@ -398,17 +419,13 @@ namespace UI {
         // 自动加锁
         QMutexLocker locker(&mutex);
         while (true) {
-            if (!state) {
-                disconnect(this, &YOLOThread::updateAABB, drawQView, &DrawQView::onUpdateAABB);
-                std::cout << "已释放YOLOThread线程run函数" << std::endl;
-                break;
-            }
-
             // 等待条件变量
             while (paused) {
                 waitCondition.wait(&mutex);
             }
-
+            if (!state) {
+                break;
+            }
             frameCount++;
             auto currentTime = std::chrono::high_resolution_clock::now();
             auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastTime).count();
@@ -421,7 +438,9 @@ namespace UI {
             }
             std::vector<Object> objects;
             QImage image = videoSink->videoFrame().toImage();
-
+            if (image.isNull()) {
+                break;
+            }
             gui->yolo->detect(image, objects);
             vector<STrack> output_stracks = tracker.update(objects);
             gui->yolo->result(objects);
@@ -429,6 +448,10 @@ namespace UI {
             // 发射信号
             emit updateAABB(output_stracks);
         }
+        drawQView->scaleX = 0;
+        drawQView->scaleY = 0;
+        disconnect(this, &YOLOThread::updateAABB, drawQView, &DrawQView::onUpdateAABB);
+        std::cout << "已释放YOLOThread线程run函数" << std::endl;
     }
 
     void YOLOThread::updateByteTrack(BYTETracker &tracker, std::vector<STrack> &output_stracks) {
@@ -491,8 +514,10 @@ namespace UI {
         connect(gui->uiMainWindow->VideoState_Button, &QPushButton::clicked, [this]() {
             if (this->player->isPlaying()) {
                 this->pause();
+                yoloThread->pause();
             }
             else {
+                yoloThread->resume();
                 this->play();
             }
         });
@@ -507,12 +532,9 @@ namespace UI {
 
         connect(player, &QMediaPlayer::mediaStatusChanged, this, [this](QMediaPlayer::MediaStatus status) {
             if (status == QMediaPlayer::EndOfMedia) {
-                // 执行自定义任务
-                qDebug() << "播放结束，执行任务";
                 yoloThread->state = false;
-                qDebug() << "标志位完成设置";
                 yoloThread->requestInterruption();
-                qDebug() << "线程强制中断完毕";
+                this->gui->uiMainWindow->detect_Button->setText("开启推理");
             }
         });
     };
@@ -584,7 +606,13 @@ namespace UI {
     }
 
     void VideoWidget::clear() {
+        qDebug() << "播放终止，执行任务";
+        yoloThread->state = false;
+        qDebug() << "标志位完成设置";
+        yoloThread->requestInterruption();
+        qDebug() << "线程强制中断完毕";
         player->stop();
+        this->gui->uiMainWindow->detect_Button->setText("开启推理");
         this->VideoTimer.clear();
         gui->uiMainWindow->VideoTimer_Label->setText("00:00:00 / 00:00:00");
         // 设置为QUrl() 将导致播放器丢弃与当前媒体源有关的所有信息并停止与该媒体相关的所有 I/O 操作。
