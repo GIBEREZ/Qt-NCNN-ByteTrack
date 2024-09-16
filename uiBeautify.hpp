@@ -10,6 +10,9 @@
 #include <QPropertyAnimation>
 #include <QGraphicsOpacityEffect>
 #include <QParallelAnimationGroup>
+#include <QPushButton>
+
+#include "Mark.hpp"
 
 namespace AM {
     class clickEffect : public QLabel {
@@ -24,6 +27,15 @@ namespace AM {
         QPropertyAnimation *positionAnimation;      // 位置动画
         QPropertyAnimation *opacityAnimation;       // 透明度动画
         QParallelAnimationGroup *animationGroup;    // 动画组
+    };
+}
+
+namespace UI {
+    class QButtonGroup {
+    public:
+        explicit QButtonGroup(const std::vector<QPushButton*>& buttons, int index);
+    private:
+        std::vector<QPushButton*> buttons;  // 直接存储按钮指针的 vector
     };
 }
 

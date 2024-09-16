@@ -59,12 +59,30 @@ GUI::GUI() {
         tcpUi->sendData("Hello, I am the Qt upper computer");
     });
 
+
     connect(uiMainWindow->Main_Button, &QPushButton::clicked, [this]() {
         uiMainWindow->stackedWidget->setCurrentIndex(0);
+        UI::QButtonGroup D = *new UI::QButtonGroup({uiMainWindow->Main_Button, uiMainWindow->Log_Button, uiMainWindow->Tool_Button, uiMainWindow->Folder_Button, uiMainWindow->Setting_Button}, 0);
     });
 
     connect(uiMainWindow->Log_Button, &QPushButton::clicked, [this]() {
         uiMainWindow->stackedWidget->setCurrentIndex(1);
+        UI::QButtonGroup D = *new UI::QButtonGroup({uiMainWindow->Main_Button, uiMainWindow->Log_Button, uiMainWindow->Tool_Button, uiMainWindow->Folder_Button, uiMainWindow->Setting_Button}, 1);
+    });
+
+    connect(uiMainWindow->Tool_Button, &QPushButton::clicked, [this]() {
+        uiMainWindow->stackedWidget->setCurrentIndex(1);
+        UI::QButtonGroup D = *new UI::QButtonGroup({uiMainWindow->Main_Button, uiMainWindow->Log_Button, uiMainWindow->Tool_Button, uiMainWindow->Folder_Button, uiMainWindow->Setting_Button}, 2);
+    });
+
+    connect(uiMainWindow->Folder_Button, &QPushButton::clicked, [this]() {
+        uiMainWindow->stackedWidget->setCurrentIndex(1);
+        UI::QButtonGroup D = *new UI::QButtonGroup({uiMainWindow->Main_Button, uiMainWindow->Log_Button, uiMainWindow->Tool_Button, uiMainWindow->Folder_Button, uiMainWindow->Setting_Button}, 3);
+    });
+
+    connect(uiMainWindow->Setting_Button, &QPushButton::clicked, [this]() {
+        uiMainWindow->stackedWidget->setCurrentIndex(1);
+        UI::QButtonGroup D = *new UI::QButtonGroup({uiMainWindow->Main_Button, uiMainWindow->Log_Button, uiMainWindow->Tool_Button, uiMainWindow->Folder_Button, uiMainWindow->Setting_Button}, 4);
     });
 
     connect(uiMainWindow->min_Button, &QPushButton::clicked, [this](){
@@ -111,6 +129,8 @@ void GUI::UI_init() {
     uiMainWindow->VideoState_Button->setIcon(QPixmap("Image/icon/暂停.png"));
     uiMainWindow->Forward_Button->setIcon(QPixmap("Image/icon/快进.png"));
     uiMainWindow->VideoClose_Button->setIcon(QPixmap("Image/icon/终止.png"));
+
+    uiMainWindow->verticalLayout_3->setAlignment(Qt::AlignCenter);
 
     QPixmap pixmap("Image/头像.png");
     // 创建和 QLabel 一样大小的 pixmap
@@ -280,15 +300,14 @@ namespace UI {
         QWidget::mousePressEvent(event);
         this->setFocus();
         if (Qt::LeftButton == event->button()) {
-            AM::clickEffect *clickEffect = new AM::clickEffect(this);
-            clickEffect->showEffect(emojis[QRandomGenerator::global()->bounded(emojiCount)], event->globalPos());
+            // 标记鼠标为按下状态
+            this->isMousePressed = true;
+            (new AM::clickEffect(this))->showEffect(emojis[QRandomGenerator::global()->bounded(emojiCount)], event->globalPos());
+            if (0 == (Qt::WindowMaximized & this->windowState())) {
+                this->mousePressPosition = event->globalPos();
+                event->ignore();
+            }
         }
-        if (Qt::LeftButton == event->button() && 0 == (Qt::WindowMaximized & this->windowState())) {
-            this->mousePressPosition = event->globalPos();
-            event->ignore();
-        }
-        // 标记鼠标为按下状态
-        this->isMousePressed = true;
     }
 
     void MainWindow::mouseMoveEvent(QMouseEvent *event) {
@@ -302,10 +321,13 @@ namespace UI {
             QPoint currentMousePos = event->globalPos();
             // 计算鼠标移动的相对位移
             QPoint delta = currentMousePos - this->mousePressPosition;
-            // 移动窗口到新的位置
-            move(this->pos() + delta);
-            // 更新鼠标按下的位置，以便下次计算移动
-            this->mousePressPosition = currentMousePos;
+            // 设定移动窗口的最小阈值，避免轻微抖动
+            if (delta.manhattanLength() > 10) {
+                // 移动窗口到新的位置
+                move(this->pos() + delta);
+                // 更新鼠标按下的位置，以便下次计算移动
+                this->mousePressPosition = currentMousePos;
+            }
         }
     }
 

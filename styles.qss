@@ -50,6 +50,16 @@ QPushButton#Setting_Button, QPushButton#Folder_Button, QPushButton#Regress_Butto
     background: none;
 }
 
+QPushButton#Main_Button {
+    border-radius: 5px;
+    background: white;
+}
+
+QPushButton#Main_Button:hover, QPushButton#Log_Button:hover, QPushButton#Tool_Button:hover, QPushButton#Folder_Button:hover, QPushButton#Setting_Button:hover {
+    border-radius: 5px;
+    background: white;
+}
+
 QLabel#NetworkStatusLabel {
     background-color: red;
     color: white;

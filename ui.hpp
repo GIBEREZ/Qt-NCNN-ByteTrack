@@ -110,6 +110,7 @@ public:
     QWidget *Sidebar_QWidget;
     QVBoxLayout *verticalLayout_3;
     QLabel *Head_QLabel;
+    QSpacerItem *verticalSpacer;
     QPushButton *Main_Button;
     QPushButton *Log_Button;
     QPushButton *Tool_Button;
@@ -580,13 +581,13 @@ public:
         Sidebar_QWidget->setLayoutDirection(Qt::LeftToRight);
         Sidebar_QWidget->setAutoFillBackground(false);
         verticalLayout_3 = new QVBoxLayout(Sidebar_QWidget);
-        verticalLayout_3->setSpacing(14);
+        verticalLayout_3->setSpacing(10);
         verticalLayout_3->setObjectName("verticalLayout_3");
-        verticalLayout_3->setContentsMargins(14, 40, 14, 9);
+        verticalLayout_3->setContentsMargins(10, 40, 10, 10);
         Head_QLabel = new QLabel(Sidebar_QWidget);
         Head_QLabel->setObjectName("Head_QLabel");
-        Head_QLabel->setMinimumSize(QSize(50, 50));
-        Head_QLabel->setMaximumSize(QSize(50, 50));
+        Head_QLabel->setMinimumSize(QSize(40, 40));
+        Head_QLabel->setMaximumSize(QSize(40, 40));
         Head_QLabel->setStyleSheet(QString::fromUtf8(""));
         Head_QLabel->setScaledContents(true);
         Head_QLabel->setAlignment(Qt::AlignCenter);
@@ -595,13 +596,17 @@ public:
 
         verticalLayout_3->addWidget(Head_QLabel);
 
+        verticalSpacer = new QSpacerItem(20, 15, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
+
+        verticalLayout_3->addItem(verticalSpacer);
+
         Main_Button = new QPushButton(Sidebar_QWidget);
         Main_Button->setObjectName("Main_Button");
         Main_Button->setMinimumSize(QSize(40, 40));
         Main_Button->setMaximumSize(QSize(40, 40));
         Main_Button->setCursor(QCursor(Qt::PointingHandCursor));
         Main_Button->setLayoutDirection(Qt::LeftToRight);
-        Main_Button->setIconSize(QSize(40, 40));
+        Main_Button->setIconSize(QSize(35, 35));
         Main_Button->setAutoDefault(false);
         Main_Button->setFlat(false);
 
@@ -612,7 +617,7 @@ public:
         Log_Button->setMinimumSize(QSize(40, 40));
         Log_Button->setMaximumSize(QSize(40, 40));
         Log_Button->setCursor(QCursor(Qt::PointingHandCursor));
-        Log_Button->setIconSize(QSize(40, 40));
+        Log_Button->setIconSize(QSize(35, 35));
 
         verticalLayout_3->addWidget(Log_Button);
 
@@ -621,7 +626,7 @@ public:
         Tool_Button->setMinimumSize(QSize(40, 40));
         Tool_Button->setMaximumSize(QSize(40, 40));
         Tool_Button->setCursor(QCursor(Qt::PointingHandCursor));
-        Tool_Button->setIconSize(QSize(40, 40));
+        Tool_Button->setIconSize(QSize(35, 35));
 
         verticalLayout_3->addWidget(Tool_Button);
 
@@ -634,7 +639,7 @@ public:
         Folder_Button->setMinimumSize(QSize(40, 40));
         Folder_Button->setMaximumSize(QSize(40, 40));
         Folder_Button->setCursor(QCursor(Qt::PointingHandCursor));
-        Folder_Button->setIconSize(QSize(40, 40));
+        Folder_Button->setIconSize(QSize(35, 35));
 
         verticalLayout_3->addWidget(Folder_Button);
 
@@ -643,7 +648,7 @@ public:
         Setting_Button->setMinimumSize(QSize(40, 40));
         Setting_Button->setMaximumSize(QSize(40, 40));
         Setting_Button->setCursor(QCursor(Qt::PointingHandCursor));
-        Setting_Button->setIconSize(QSize(40, 40));
+        Setting_Button->setIconSize(QSize(35, 35));
 
         verticalLayout_3->addWidget(Setting_Button);
 
