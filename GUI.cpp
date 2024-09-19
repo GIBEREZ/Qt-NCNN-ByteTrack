@@ -13,7 +13,9 @@ GUI::GUI() {
 
     UI_init();
 
+    drawQView = new UI::DrawQView();
     pVideoWidget = new UI::VideoWidget(uiMainWindow->groupBox, this);
+    uiMainWindow->gridLayout_2->addWidget(drawQView, 0, 0, 1, 6);
 
     // 应用QSS样式表
     QFile file("styles.qss");
@@ -322,7 +324,7 @@ namespace UI {
             // 计算鼠标移动的相对位移
             QPoint delta = currentMousePos - this->mousePressPosition;
             // 设定移动窗口的最小阈值，避免轻微抖动
-            if (delta.manhattanLength() > 10) {
+            if (delta.manhattanLength() > 20) {
                 // 移动窗口到新的位置
                 move(this->pos() + delta);
                 // 更新鼠标按下的位置，以便下次计算移动
@@ -412,9 +414,24 @@ namespace UI {
         this->update();
     }
 
-    void DrawQView::draw_seg() {
-        // 绘制一个分割区域，比如绘制一个椭圆，假设中心点(150, 150)，大小为(100, 50)
-        scene.addEllipse(150, 150, 100, 50, QPen(Qt::blue), QBrush(Qt::blue));
+    void DrawQView::onUpdateSeg(const QImage& image, const std::vector<Object>& objects) {
+        draw_Seg(image, objects);
+    }
+
+    void DrawQView::draw_Seg(const QImage& image, const std::vector<Object>& objects) {
+        // 绘制之前清空场景中的所有项
+        scene.clear();
+        if (scaleX == 0 & scaleY == 0) {
+            draw_clear();
+            return;
+        }
+        cv::Mat rgb = user_CV::draw_seg(image, objects);
+        cv::resize(rgb, rgb, cv::Size(this->width(), this->height()));
+        // 将 QImage 转换为 QPixmap
+        QPixmap pixmap = QPixmap::fromImage(user_CV::cvMatToQImage(rgb, true, false));
+        // 将 pixmap 添加到场景
+        scene.addPixmap(pixmap);
+
         this->update();
     }
 
@@ -425,14 +442,17 @@ namespace UI {
     }
 
     YOLOThread::YOLOThread(GUI *gui, QVideoSink *videoSink, QObject *parent): QThread(parent), gui(gui), videoSink(videoSink){
-        this->drawQView = new DrawQView();
-        gui->uiMainWindow->gridLayout_2->addWidget(this->drawQView, 0, 0, 1, 6);
-        connect(drawQView, &DrawQView::viewChanged, this, &YOLOThread::onViewChanged);
+        connect(gui->drawQView, &DrawQView::viewChanged, this, &YOLOThread::onViewChanged);
     }
 
     void YOLOThread::run() {
+        if (modelType == 0) AABB();
+        else if (modelType == 1) Seg();
+    }
+
+    void YOLOThread::AABB() {
         // 连接信号和槽
-        connect(this, &YOLOThread::updateAABB, drawQView, &DrawQView::onUpdateAABB);
+        connect(this, &YOLOThread::updateAABB, gui->drawQView, &DrawQView::onUpdateAABB);
         auto lastTime = std::chrono::high_resolution_clock::now();
         int frameCount = 0;
         double fps = 0.0;
@@ -442,12 +462,9 @@ namespace UI {
         QMutexLocker locker(&mutex);
         while (true) {
             // 等待条件变量
-            while (paused) {
-                waitCondition.wait(&mutex);
-            }
-            if (!state) {
-                break;
-            }
+            while (paused) waitCondition.wait(&mutex);
+            if (!state) break;
+
             frameCount++;
             auto currentTime = std::chrono::high_resolution_clock::now();
             auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastTime).count();
@@ -460,9 +477,9 @@ namespace UI {
             }
             std::vector<Object> objects;
             QImage image = videoSink->videoFrame().toImage();
-            if (image.isNull()) {
-                break;
-            }
+
+            if (image.isNull()) break;
+
             gui->yolo->detect(image, objects);
             vector<STrack> output_stracks = tracker.update(objects);
             gui->yolo->result(objects);
@@ -470,9 +487,43 @@ namespace UI {
             // 发射信号
             emit updateAABB(output_stracks);
         }
-        drawQView->scaleX = 0;
-        drawQView->scaleY = 0;
-        disconnect(this, &YOLOThread::updateAABB, drawQView, &DrawQView::onUpdateAABB);
+        gui->drawQView->scaleX = 0;
+        gui->drawQView->scaleY = 0;
+        disconnect(this, &YOLOThread::updateAABB, gui->drawQView, &DrawQView::onUpdateAABB);
+        std::cout << "已释放YOLOThread线程run函数" << std::endl;
+    }
+
+    void YOLOThread::Seg() {
+        connect(this, &YOLOThread::updateSeg, gui->drawQView, &DrawQView::onUpdateSeg);
+        auto lastTime = std::chrono::high_resolution_clock::now();
+        int frameCount = 0;
+        double fps = 0.0;
+        this->onViewChanged();
+        QMutexLocker locker(&mutex);
+        while (true) {
+            // 等待条件变量
+            while (paused) waitCondition.wait(&mutex);
+            if (!state) break;
+
+            frameCount++;
+            auto currentTime = std::chrono::high_resolution_clock::now();
+            auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastTime).count();
+            // 每处理一帧都记录当前时间
+            if (elapsedTime > 1000) {
+                fps = frameCount * 1000.0 / elapsedTime;
+                frameCount = 0;
+                lastTime = currentTime;
+                std::cout << "当前平均 FPS: " << fps << std::endl;
+            }
+            std::vector<Object> objects;
+            QImage image = videoSink->videoFrame().toImage();
+
+            gui->yolo->detect_seg(image, objects);
+            emit updateSeg(image, objects);
+        }
+        gui->drawQView->scaleX = 0;
+        gui->drawQView->scaleY = 0;
+        disconnect(this, &YOLOThread::updateSeg, gui->drawQView, &DrawQView::onUpdateSeg);
         std::cout << "已释放YOLOThread线程run函数" << std::endl;
     }
 
@@ -499,12 +550,12 @@ namespace UI {
 
     void YOLOThread::onViewChanged() {
         // 调整缩放因子
-        std::cout << drawQView->width() << "x" << drawQView->height() << std::endl;
-        float scaleX = static_cast<float>(drawQView->width()) / static_cast<float>(videoSink->videoFrame().toImage().width());
-        float scaleY = static_cast<float>(drawQView->height()) / static_cast<float>(videoSink->videoFrame().toImage().height());
-        drawQView->scaleX = scaleX;
-        drawQView->scaleY = scaleY;
-        drawQView->setDrawQViemRect();
+        std::cout << gui->drawQView->width() << "x" << gui->drawQView->height() << std::endl;
+        float scaleX = static_cast<float>(gui->drawQView->width()) / static_cast<float>(videoSink->videoFrame().toImage().width());
+        float scaleY = static_cast<float>(gui->drawQView->height()) / static_cast<float>(videoSink->videoFrame().toImage().height());
+        gui->drawQView->scaleX = scaleX;
+        gui->drawQView->scaleY = scaleY;
+        gui->drawQView->setDrawQViemRect();
     }
 
     VideoWidget::VideoWidget(QWidget *parent, GUI *gui) : QWidget(parent), m_frame(QImage()), gui(gui) {

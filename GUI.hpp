@@ -91,11 +91,12 @@ namespace UI {
         void wheelEvent(QWheelEvent *event) override;
         void resizeEvent(QResizeEvent *event) override;
         void setDrawQViemRect();
-        void onUpdateAABB(const std::vector<STrack>& output_stracks);
         // 目标检测
+        void onUpdateAABB(const std::vector<STrack>& output_stracks);
         void draw_AABB(const std::vector<STrack>& output_stracks);
         // 目标分割
-        void draw_seg();
+        void onUpdateSeg(const QImage& image, const std::vector<Object>& objects);
+        void draw_Seg(const QImage& image, const std::vector<Object>& objects);
         // 绘制内容清空
         void draw_clear();
         // 缩放因子
@@ -113,19 +114,22 @@ namespace UI {
         Q_OBJECT
     public:
         bool state = false;
-        DrawQView *drawQView;
     public:
         explicit YOLOThread(GUI *gui, QVideoSink *videoSink, QObject *parent);
         void updateByteTrack(BYTETracker &tracker, std::vector<STrack> &output_stracks);
         void run() override;
+        void AABB();
+        void Seg();
         void pause();
         void resume();
     signals:
         void updateAABB(const std::vector<STrack>& output_stracks);
+        void updateSeg(const QImage& image, const std::vector<Object>& objects);
     private slots:
         void onViewChanged();
     private:
         GUI *gui;
+        int modelType = 1;
         QVideoSink *videoSink;
         QMutex mutex;
         QWaitCondition waitCondition;
@@ -161,9 +165,10 @@ public:
     QMainWindow *ui;
     Ui_MainWindow *uiMainWindow;
     UI::VideoWidget *pVideoWidget;
+    UI::DrawQView *drawQView;
     bool Model_flag = false;
     TcpUI* tcpUi;
-    YOLO *yolo;
+    YOLO* yolo;
     LogWidget *logWidget;
     explicit GUI();
     void UI_init();

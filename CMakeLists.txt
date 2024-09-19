@@ -25,6 +25,7 @@ find_package(Qt6
         Network
         Multimedia
         MultimediaWidgets
+        Svg
         REQUIRED
 )
 
@@ -93,6 +94,7 @@ target_link_libraries(WIFI_Qt
         Qt::Network
         Qt::Multimedia
         Qt::MultimediaWidgets
+        Qt::Svg
         ncnn
         ${OpenCV_LIBS}
         libmysql

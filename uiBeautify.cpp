@@ -73,8 +73,7 @@ namespace AM {
 namespace UI {
     QButtonGroup::QButtonGroup(const std::vector<QPushButton*>& buttonsList, int index) : buttons(buttonsList) {
         buttons[Page_index]->setStyleSheet(
-                "border: none;"
-                "background: none;"
+                "QPushButton { border: none; background: none; } QPushButton:hover { border-radius: 5px; background: white; }"
         );
         buttons[index]->setStyleSheet(
                 "border-radius: 5px;"

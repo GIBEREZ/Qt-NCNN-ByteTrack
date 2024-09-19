@@ -49,7 +49,7 @@ namespace user_CV {
         }
     }
 
-    cv::Mat QImageTocvMat(QImage &image, bool clone, bool rb_swap)
+    cv::Mat QImageTocvMat(const QImage &image, bool clone, bool rb_swap)
     {
         cv::Mat mat;
         switch(image.format())
@@ -132,6 +132,27 @@ namespace user_CV {
                 return "Unknown Format";
         }
     }
+
+    cv::Mat draw_seg(const QImage &rgb, const vector<Object> &objects) {
+        cv::Mat image = user_CV::QImageTocvMat(rgb, true, false);
+        for (size_t i = 0; i < objects.size(); i++) {
+            const Object &obj = objects[i];
+            for (int y = 0; y < image.rows; y++) {
+                uchar* image_ptr = image.ptr(y);
+                const float* mask_ptr = obj.mask.ptr<float>(y);
+                for (int x = 0; x < image.cols; x++) {
+                    if (mask_ptr[x] >= 0.5)
+                    {
+                        image_ptr[0] = cv::saturate_cast<uchar>(image_ptr[0] * 0.5 + colors[i][2] * 0.5);
+                        image_ptr[1] = cv::saturate_cast<uchar>(image_ptr[1] * 0.5 + colors[i][1] * 0.5);
+                        image_ptr[2] = cv::saturate_cast<uchar>(image_ptr[2] * 0.5 + colors[i][0] * 0.5);
+                    }
+                    image_ptr += 3;
+                }
+            }
+        }
+        return image;
+    }
 }
 
 namespace Operator{
@@ -179,7 +200,7 @@ namespace Operator{
         }
     }
 
-    static void generate_proposals(std::vector<GridAndStride> grid_strides, const ncnn::Mat& pred, float prob_threshold, std::vector<Object>& objects,const int num_class)
+    static void generate_proposals(std::vector<GridAndStride> grid_strides, const ncnn::Mat& pred, float prob_threshold, std::vector<Object>& objects, int num_class, int modelType)
     {
         const int num_points = grid_strides.size();
         const int reg_max_1 = 16;
@@ -254,6 +275,11 @@ namespace Operator{
                 obj.label = label;
                 obj.prob = box_prob;
 
+                if (modelType == 1) {
+                    obj.mask_feat.resize(32);
+                    std::copy(pred.row(i) + 64 + num_class, pred.row(i) + 64 + num_class + 32, obj.mask_feat.begin());
+                }
+
                 objects.push_back(obj);
             }
         }
@@ -282,7 +308,6 @@ namespace Operator{
                 j--;
             }
         }
-
         {
             {
                 if (left < j) qsort_descent_inplace(faceobjects, left, j);
@@ -351,6 +376,155 @@ namespace Operator{
         }
 
         return valueIndexPairs;  // 返回前k个最大值及其索引
+    }
+
+    static void slice(const ncnn::Mat& in, ncnn::Mat& out, int start, int end, int axis)
+    {
+        ncnn::Option opt;
+        opt.num_threads = 1;
+        opt.use_fp16_storage = false;
+        opt.use_packing_layout = false;
+        opt.use_vulkan_compute = true;
+
+        ncnn::Layer* op = ncnn::create_layer("Crop");
+
+        // set param
+        ncnn::ParamDict pd;
+
+        ncnn::Mat axes = ncnn::Mat(1);
+        axes.fill(axis);
+        ncnn::Mat ends = ncnn::Mat(1);
+        ends.fill(end);
+        ncnn::Mat starts = ncnn::Mat(1);
+        starts.fill(start);
+        pd.set(9, starts);// start
+        pd.set(10, ends);// end
+        pd.set(11, axes);//axes
+
+        op->load_param(pd);
+
+        op->create_pipeline(opt);
+
+        // forward
+        op->forward(in, out, opt);
+
+        op->destroy_pipeline(opt);
+
+        delete op;
+    }
+    static void interp(const ncnn::Mat& in, const float& scale, const int& out_w, const int& out_h, ncnn::Mat& out)
+    {
+        ncnn::Option opt;
+        opt.num_threads = 1;
+        opt.use_fp16_storage = false;
+        opt.use_packing_layout = false;
+        opt.use_vulkan_compute = true;
+
+        ncnn::Layer* op = ncnn::create_layer("Interp");
+
+        // set param
+        ncnn::ParamDict pd;
+        pd.set(0, 2);// resize_type
+        pd.set(1, scale);// height_scale
+        pd.set(2, scale);// width_scale
+        pd.set(3, out_h);// height
+        pd.set(4, out_w);// width
+
+        op->load_param(pd);
+
+        op->create_pipeline(opt);
+
+        // forward
+        op->forward(in, out, opt);
+
+        op->destroy_pipeline(opt);
+
+        delete op;
+    }
+    static void reshape(const ncnn::Mat& in, ncnn::Mat& out, int c, int h, int w, int d)
+    {
+        ncnn::Option opt;
+        opt.num_threads = 1;
+        opt.use_fp16_storage = false;
+        opt.use_packing_layout = false;
+        opt.use_vulkan_compute = true;
+
+        ncnn::Layer* op = ncnn::create_layer("Reshape");
+
+        // set param
+        ncnn::ParamDict pd;
+
+        pd.set(0, w);// start
+        pd.set(1, h);// end
+        if (d > 0)
+            pd.set(11, d);//axes
+        pd.set(2, c);//axes
+        op->load_param(pd);
+
+        op->create_pipeline(opt);
+
+        // forward
+        op->forward(in, out, opt);
+
+        op->destroy_pipeline(opt);
+
+        delete op;
+    }
+    static void sigmoid(ncnn::Mat& bottom)
+    {
+        ncnn::Option opt;
+        opt.num_threads = 1;
+        opt.use_fp16_storage = false;
+        opt.use_packing_layout = false;
+        opt.use_vulkan_compute = true;
+
+        ncnn::Layer* op = ncnn::create_layer("Sigmoid");
+
+        op->create_pipeline(opt);
+
+        // forward
+
+        op->forward_inplace(bottom, opt);
+        op->destroy_pipeline(opt);
+
+        delete op;
+    }
+    static void matmul(const std::vector<ncnn::Mat>& bottom_blobs, ncnn::Mat& top_blob)
+    {
+        ncnn::Option opt;
+        opt.num_threads = 1;
+        opt.use_fp16_storage = false;
+        opt.use_packing_layout = false;
+        opt.use_vulkan_compute = true;
+
+        ncnn::Layer* op = ncnn::create_layer("MatMul");
+
+        // set param
+        ncnn::ParamDict pd;
+        pd.set(0, 0);// axis
+
+        op->load_param(pd);
+
+        op->create_pipeline(opt);
+        std::vector<ncnn::Mat> top_blobs(1);
+        op->forward(bottom_blobs, top_blobs, opt);
+        top_blob = top_blobs[0];
+
+        op->destroy_pipeline(opt);
+
+        delete op;
+    }
+
+    static void decode_mask(const ncnn::Mat& mask_feat, const int& img_w, const int& img_h, const ncnn::Mat& mask_proto, const ncnn::Mat& in_pad, const int& wpad, const int& hpad, ncnn::Mat& mask_pred_result)
+    {
+        ncnn::Mat masks;
+        matmul(std::vector<ncnn::Mat>{mask_feat, mask_proto}, masks);
+        sigmoid(masks);
+        reshape(masks, masks, masks.h, in_pad.h / 4, in_pad.w / 4, 0);
+        slice(masks, mask_pred_result, (wpad / 2) / 4, (in_pad.w - wpad / 2) / 4, 2);
+        slice(mask_pred_result, mask_pred_result, (hpad / 2) / 4, (in_pad.h - hpad / 2) / 4, 1);
+        interp(mask_pred_result, 4.0, img_w, img_h, mask_pred_result);
+
     }
 };
 
@@ -454,7 +628,7 @@ int YOLO::detect(QImage& rgb, std::vector<Object>& objects) {
     std::vector<int> strides = {8, 16, 32};
     std::vector<GridAndStride> grid_strides;
     Operator::generate_grids_and_stride(in_pad.w, in_pad.h, strides, grid_strides);
-    Operator::generate_proposals(grid_strides, out, 0.84f, proposals, 14);
+    Operator::generate_proposals(grid_strides, out, 0.84f, proposals, class_names.size(), 0);
 
     // 按得分从高到低对所有提案进行排序
     Operator::qsort_descent_inplace(proposals);
@@ -574,5 +748,99 @@ int YOLO::draw(cv::Mat &rgb, std::vector<Object>& objects) {
         cv::circle(rgb, p1, 3, cv::Scalar(0, 255, 120), -1);//画点，其实就是实心圆
         cv::circle(rgb, p2, 3, cv::Scalar(0, 255, 120), -1);//画点，其实就是实心圆
     }
+    return 0;
+}
+
+int YOLO::detect_seg(QImage &rgb, vector<Object> &objects) {
+    int width = rgb.width();
+    int height = rgb.height();
+
+    // 将输入神经网的图片尺寸调整为32的倍数
+    int w = width;
+    int h = height;
+    float scale = 1.f;
+    if (w > h)
+    {
+        scale = (float)target_size / w;
+        w = target_size;
+        h = h * scale;
+    }
+    else
+    {
+        scale = (float)target_size / h;
+        h = target_size;
+        w = w * scale;
+    }
+
+    // 将 QImage 转换为 ncnn::Mat
+    ncnn::Mat in = ncnn::Mat::from_pixels_resize(rgb.convertToFormat(QImage::Format_RGB888).bits(),
+                                                 ncnn::Mat::PIXEL_RGB,
+                                                 width, height, w, h);
+    int wpad = (w + 31) / 32 * 32 - w;
+    int hpad = (h + 31) / 32 * 32 - h;
+    ncnn::Mat in_pad;
+    ncnn::copy_make_border(in, in_pad, hpad / 2, hpad - hpad / 2, wpad / 2, wpad - wpad / 2, ncnn::BORDER_CONSTANT, 0.f);
+    in_pad.substract_mean_normalize(0, norm_vals);
+
+    ncnn::Extractor ex = net.create_extractor();
+    ex.input("images", in_pad);
+    ncnn::Mat out;
+    ex.extract("output", out);
+    ncnn::Mat mask_proto;
+    ex.extract("seg", mask_proto);
+
+    std::vector<int> strides = { 8, 16, 32 };
+    std::vector<GridAndStride> grid_strides;
+    Operator::generate_grids_and_stride(in_pad.w, in_pad.h, strides, grid_strides);
+
+    std::vector<Object> proposals;
+    std::vector<Object> objects8;
+    Operator::generate_proposals(grid_strides, out, 0.4f, objects8, class_names.size(), 1);
+
+    proposals.insert(proposals.end(), objects8.begin(), objects8.end());
+
+    Operator::qsort_descent_inplace(proposals);
+
+    std::vector<int> picked;
+    Operator::nms_sorted_bboxes(proposals, picked, 0.5f);
+
+    int count = picked.size();
+
+    ncnn::Mat mask_feat = ncnn::Mat(32, count, sizeof(float));
+    for (int i = 0; i < count; i++) {
+        float* mask_feat_ptr = mask_feat.row(i);
+        std::memcpy(mask_feat_ptr, proposals[picked[i]].mask_feat.data(), sizeof(float) * proposals[picked[i]].mask_feat.size());
+    }
+
+    ncnn::Mat mask_pred_result;
+    Operator::decode_mask(mask_feat, width, height, mask_proto, in_pad, wpad, hpad, mask_pred_result);
+
+    objects.resize(count);
+    for (int i = 0; i < count; i++)
+    {
+        objects[i] = proposals[picked[i]];
+
+        // adjust offset to original unpadded
+        float x0 = (objects[i].rect.x - (wpad / 2)) / scale;
+        float y0 = (objects[i].rect.y - (hpad / 2)) / scale;
+        float x1 = (objects[i].rect.x + objects[i].rect.width - (wpad / 2)) / scale;
+        float y1 = (objects[i].rect.y + objects[i].rect.height - (hpad / 2)) / scale;
+
+        // clip
+        x0 = std::max(std::min(x0, (float)(width - 1)), 0.f);
+        y0 = std::max(std::min(y0, (float)(height - 1)), 0.f);
+        x1 = std::max(std::min(x1, (float)(width - 1)), 0.f);
+        y1 = std::max(std::min(y1, (float)(height - 1)), 0.f);
+
+        objects[i].rect.x = x0;
+        objects[i].rect.y = y0;
+        objects[i].rect.width = x1 - x0;
+        objects[i].rect.height = y1 - y0;
+
+        objects[i].mask = cv::Mat::zeros(height, width, CV_32FC1);
+        cv::Mat mask = cv::Mat(height, width, CV_32FC1, (float*)mask_pred_result.channel(i));
+        mask(objects[i].rect).copyTo(objects[i].mask(objects[i].rect));
+    }
+
     return 0;
 }

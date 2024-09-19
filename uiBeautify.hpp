@@ -16,6 +16,7 @@
 
 namespace AM {
     class clickEffect : public QLabel {
+        Q_OBJECT
     public:
         explicit clickEffect(QWidget *parent = nullptr);
         void showEffect(const QString &text, const QPoint &position);
