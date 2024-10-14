@@ -1,5 +1,5 @@
 ## 毕业设计
-这是我的毕业设计 QtUI框架 + NCNN推理框架 + ByteTrack目标跟踪
+来自GIBEREZ（https://github.com/GIBEREZ） 这是我的毕业设计 QtUI框架 + NCNN推理框架 + ByteTrack目标跟踪
 ## Graduation Design
 This is my graduation project QtUI framework+NCNN inference framework+ByteTrack target tracking
 ## 许可证
